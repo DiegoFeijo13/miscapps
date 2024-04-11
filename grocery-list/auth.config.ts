@@ -7,12 +7,12 @@ export const authConfig = {
     callbacks: {
         authorized({ auth, request: { nextUrl } }) {
             const isLoggedIn = !!auth?.user;
-            const isOnDashboard = nextUrl.pathname.startsWith('/main/lists');
-            if (isOnDashboard) {
+            const isOnLists = nextUrl.pathname.startsWith('/main');
+            if (isOnLists) {
                 if (isLoggedIn) return true;
                 return false; // Redirect unauthenticated users to login page
             } else if (isLoggedIn) {
-                return Response.redirect(new URL('/main/lists', nextUrl));
+                return Response.redirect(new URL('/main', nextUrl));
             }
             return true;
         },
