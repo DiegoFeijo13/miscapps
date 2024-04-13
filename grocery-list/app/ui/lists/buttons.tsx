@@ -30,6 +30,7 @@ export function ActionButtons({ id }: { id: string }) {
       <form action={deleteListWithId}>
       <Button
         isIconOnly
+        type='submit'
         color='danger'
         variant='light'
       >

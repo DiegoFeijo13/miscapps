@@ -6,7 +6,7 @@ import { CreateList } from '@/app/ui/lists/buttons';
 import {
   fetchListPages,
   fetchFilteredLists
-} from '@/app/lib/data'
+} from '@/app/lib/list-actions'
 import { TableSkeleton } from '@/app/ui/lists/skeletons';
 import { Suspense } from 'react';
 import { Spacer } from "@nextui-org/spacer"
@@ -23,9 +23,7 @@ export default async function Page({
   const currentPage = Number(searchParams?.page) || 1;
   const totalPages = await fetchListPages(query);
   const lists = await fetchFilteredLists(query, currentPage);  
-
-  console.log(lists)
-
+  
   return (
     <>
       <PageTitle title="Listas"/>

@@ -1,18 +1,21 @@
 "use client"
 
-import React from 'react'
 import {Breadcrumbs, BreadcrumbItem} from "@nextui-org/react";
 
-export default function ListsBreadcrumbs() {
-  const [currentPage, setCurrentPage] = React.useState("lists")
-  console.log(currentPage)
+export function CreateListBreadcrumbs() {  
   return (
-    <Breadcrumbs 
-      underline="active"
-      // onAction ={(key) => setCurrentPage(key)}
-      >
-        <BreadcrumbItem key="lists" isCurrent={currentPage == "lists"}>Listas</BreadcrumbItem>
-        <BreadcrumbItem key="create" isCurrent={currentPage == "create"}>Nova Lista</BreadcrumbItem>
+    <Breadcrumbs underline="hover">
+        <BreadcrumbItem href='/main/lists'>Listas</BreadcrumbItem>
+        <BreadcrumbItem>Nova Lista</BreadcrumbItem>
+  </Breadcrumbs>
+  );
+}
+
+export function EditListBreadcrumbs() {  
+  return (
+    <Breadcrumbs underline="hover">
+        <BreadcrumbItem href='/main/lists'>Listas</BreadcrumbItem>
+        <BreadcrumbItem>Editar Lista</BreadcrumbItem>
   </Breadcrumbs>
   );
 }
