@@ -17,7 +17,7 @@ export default async function ProductsTable({products}: {products: Product[]}) {
   return (
     <Table>
     <TableHeader>
-      <TableColumn>Produto</TableColumn>      
+      <TableColumn width={'80%'}>Produto</TableColumn>      
       <TableColumn>Ações</TableColumn>
     </TableHeader>
     <TableBody>

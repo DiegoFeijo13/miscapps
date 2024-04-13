@@ -30,6 +30,7 @@ export function ActionButtons({ id }: { id: string }) {
       <form action={deleteProductWithId}>
         <Button
           isIconOnly
+          type='submit'
           color='danger'
           variant='light'
         >
@@ -37,16 +38,5 @@ export function ActionButtons({ id }: { id: string }) {
         </Button>
       </form>
     </ButtonGroup>
-  );
-}
-
-export function UpdateProduct({ id }: { id: string }) {
-  return (
-    <Link
-      href={`/main/products/${id}/edit`}
-      className="rounded-md border p-2 hover:bg-gray-100"
-    >
-      <PencilIcon className="w-5" />
-    </Link>
   );
 }

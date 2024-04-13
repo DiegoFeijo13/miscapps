@@ -20,7 +20,7 @@ export default async function ListsTable({
 
     <Table>
       <TableHeader>
-        <TableColumn width={'50%'} maxWidth={'50%'}>Nome</TableColumn>
+        <TableColumn width={'50%'}>Nome</TableColumn>
         <TableColumn width={'30%'}>Data</TableColumn>
         <TableColumn width={'20%'} align="end">Ações</TableColumn>
       </TableHeader>

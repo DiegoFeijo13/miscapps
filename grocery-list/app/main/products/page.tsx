@@ -11,7 +11,7 @@ import {
   fetchProductPages,
   fetchCategories,
   fetchFilteredProducts
-} from '@/app/lib/data';
+} from '@/app/lib/product-actions';
 
 export default async function Page({
   searchParams,

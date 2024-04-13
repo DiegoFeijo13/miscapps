@@ -50,7 +50,7 @@ export async function createList(prevState: State, formData: FormData) {
             INSERT INTO lists (name, buy_dt)
             VALUES (${name}, ${date})
         `;
-    } catch (error) {        
+    } catch (error) {
         return {
             message: 'Erro no Banco de Dados. Falha ao criar lista.',
         }
@@ -142,6 +142,8 @@ export async function fetchListById(id: string) {
             FROM lists l      
             WHERE l.id = ${id}`;
 
+        revalidatePath(`${redirectToUrl}/${id}/edit`)
+
         return lists.rows[0];
     } catch (error) {
         console.error('Database Error:', error);
@@ -150,7 +152,6 @@ export async function fetchListById(id: string) {
 }
 
 export async function deleteList(id: string) {
-
     try {
         await sql`DELETE FROM lists WHERE id = ${id}`;
         revalidatePath(redirectToUrl);
@@ -158,6 +159,5 @@ export async function deleteList(id: string) {
     } catch (error) {
         return { message: 'Database Error: Falha ao excluir lista.', }
     }
-
 }
 
