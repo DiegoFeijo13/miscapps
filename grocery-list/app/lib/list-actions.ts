@@ -5,7 +5,7 @@ import { sql } from '@vercel/postgres';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
-const redirectToUrl = 'main/lists'
+const redirectToUrl = ''
 
 const FormSchema = z.object({
     id: z.string(),
@@ -34,7 +34,7 @@ export async function createList(prevState: State, formData: FormData) {
         date: formData.get('date'),
     });
     
-    if (!validatedFields.success) {
+    if (!validatedFields.success) {        
         return {
             errors: validatedFields.error.flatten().fieldErrors,
             message: 'Campos em branco. Falha ao criar lista.',
@@ -45,10 +45,11 @@ export async function createList(prevState: State, formData: FormData) {
 
     try {
         await sql`
-            INSERT INTO lists (name, date)
+            INSERT INTO lists (name, buy_dt)
             VALUES (${name}, ${date})
         `;
     } catch (error) {
+        console.log(error)
         return {
             message: 'Erro no Banco de Dados. Falha ao criar lista.',
         }

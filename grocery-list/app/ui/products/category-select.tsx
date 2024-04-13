@@ -20,13 +20,13 @@ export default function CategorySelect({ categories }: { categories: string[] })
 
     replace(`${pathname}?${params.toString()}`);
   }, 300)
-
+  
   return (
     <div className='mt-6'>
       <Select
         items={categories}
         label="Categoria"
-        placeholder="Selecione uma categoria"        
+        placeholder="Selecione uma categoria"               
         onChange={(e) => handleChange(e.target.value)}
       >
         {

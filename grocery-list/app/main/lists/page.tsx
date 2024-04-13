@@ -1,3 +1,4 @@
+import { PageTitle } from "@/app/ui/page-components"
 import Pagination from '@/app/ui/pagination';
 import Search from '@/app/ui/search';
 import Table from '@/app/ui/lists/table';
@@ -9,8 +10,6 @@ import {
 import { TableSkeleton } from '@/app/ui/lists/skeletons';
 import { Suspense } from 'react';
 import { Spacer } from "@nextui-org/spacer"
-import { getMoqList } from "@/app/lib/db_data"
-
 
 export default async function Page({
   searchParams,
@@ -22,26 +21,25 @@ export default async function Page({
 }) {
   const query = searchParams?.query || '';
   const currentPage = Number(searchParams?.page) || 1;
-  // const totalPages = await fetchListPages(query);
-  // const lists = await fetchFilteredLists(query, currentPage);
-  const totalPages = 5;
+  const totalPages = await fetchListPages(query);
+  const lists = await fetchFilteredLists(query, currentPage);  
+
+  console.log(lists)
 
   return (
-    <div className="w-full">
-      <div className="flex w-full items-center justify-between">
-        <h1 className='text-2xl'>Listas</h1>
-      </div>
+    <>
+      <PageTitle title="Listas"/>
       <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
         <Search placeholder="Buscar listas..." />
         <CreateList />
       </div>
       <Spacer y={4} />
       <Suspense key={query + currentPage} fallback={<TableSkeleton />}>
-        <Table lists={getMoqList(currentPage)} />
+        <Table lists={lists} />
       </Suspense>
       <div className="mt-5 flex w-full justify-center">
         <Pagination totalPages={totalPages} />
       </div>
-    </div>
+    </>
   );
 }

@@ -75,8 +75,7 @@ export async function fetchFilteredLists(
                 l.name,
                 l.buy_dt
             FROM lists l      
-            WHERE 1=1
-                AND l.name ILIKE ${`%${query}%`}
+            WHERE l.name ILIKE ${`%${query}%`}
                 OR l.buy_dt::text ILIKE ${`%${query}%`} 
             ORDER BY 
                 l.buy_dt DESC
@@ -93,8 +92,7 @@ export async function fetchListPages(query: string) {
     try {
         const count = await sql`SELECT COUNT(*)
       FROM lists l      
-      WHERE 1=1
-        AND l.name ILIKE ${`%${query}%`} 
+      WHERE l.name ILIKE ${`%${query}%`} 
         OR l.buy_dt::text ILIKE ${`%${query}%`}`;
 
         const totalPages = Math.ceil(Number(count.rows[0].count) / ITEMS_PER_PAGE);

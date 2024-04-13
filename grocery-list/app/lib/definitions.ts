@@ -27,7 +27,7 @@ export type Category = {
 export type List = {
   id: string;
   name: string;
-  date: string;
+  buy_dt: string;
 };
 
 

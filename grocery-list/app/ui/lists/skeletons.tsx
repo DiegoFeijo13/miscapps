@@ -7,8 +7,7 @@ export function TableRowSkeleton() {
       <TableCell><div className="h-6 w-24 rounded bg-gray-100"></div></TableCell>
       <TableCell><div className="h-6 w-24 rounded bg-gray-100"></div></TableCell>
       <TableCell>
-        <div className="h-[38px] w-[38px] rounded bg-gray-100"></div>
-        <div className="h-[38px] w-[38px] rounded bg-gray-100"></div>
+        <div className="h-[38px] w-[38px] rounded bg-gray-100"></div>        
       </TableCell>
     </TableRow>
   );
