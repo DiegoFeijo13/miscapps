@@ -24,4 +24,10 @@ export type Category = {
   name: string;
 }
 
+export type List = {
+  id: string;
+  name: string;
+  date: string;
+};
+
 

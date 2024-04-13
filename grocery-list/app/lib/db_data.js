@@ -51,9 +51,25 @@ const products = [
     { name: 'Desodorante Dove', category: 'Banheiro' },
     { name: 'Sabão Líquido', category: 'Banheiro' },
     { name: 'Creme Dental', category: 'Banheiro' },
-]
+];
+
+const getMoqList = function (page) {
+    let lists = [];
+    let index = (page-1) * 6    
+
+    for(let i = 1; i<=6; i++){
+        let date = new Date();
+        date.setDate(date.getDate() + index + i);
+        let dateStr = date.toLocaleDateString("pt-br")                
+        lists.push(
+            { id: `${index + i}`, name: `Mercado ${index + i}`, date: dateStr },
+        )
+    }
+    return lists;
+}
 
 module.exports = {
-    users,    
-    products
+    users,
+    products,
+    getMoqList
 };

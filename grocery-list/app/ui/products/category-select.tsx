@@ -1,7 +1,7 @@
 'use client';
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 import { useDebouncedCallback } from 'use-debounce';
-import { Listbox } from '@headlessui/react'
+import { Select, SelectItem } from "@nextui-org/react";
 
 
 export default function CategorySelect({ categories }: { categories: string[] }) {
@@ -9,7 +9,7 @@ export default function CategorySelect({ categories }: { categories: string[] })
   const pathname = usePathname();
   const { replace } = useRouter();
 
-  const handleChange = useDebouncedCallback((term) => {
+  const handleChange = useDebouncedCallback((term) => {    
     const params = new URLSearchParams(searchParams);
     params.set('page', '1');
     if (term) {
@@ -21,27 +21,21 @@ export default function CategorySelect({ categories }: { categories: string[] })
     replace(`${pathname}?${params.toString()}`);
   }, 300)
 
-  let selectedCategory = searchParams.get('category')?.toString() ?? categories[0];
-
   return (
-    <Listbox
-      value={selectedCategory}
-      onChange={(e) => handleChange(e)}>
-      <Listbox.Button>{selectedCategory}</Listbox.Button>
-      <Listbox.Options>
-        {categories.map((c) => {
-                return (
-                  <Listbox.Option
-                    key={c}
-                    value={c}
-                    disabled={false}>
-                    {c}
-                  </Listbox.Option>
-                )
-              }
+    <div className='mt-6'>
+      <Select
+        items={categories}
+        label="Categoria"
+        placeholder="Selecione uma categoria"        
+        onChange={(e) => handleChange(e.target.value)}
+      >
+        {
+          categories.map((c) => {
+            return (<SelectItem key={c}>{c}</SelectItem>)
+          }
           )
         }
-      </Listbox.Options>
-    </Listbox>
+      </Select>
+    </div>
   );
 }
