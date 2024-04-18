@@ -12,13 +12,13 @@ import {
   Spacer
 } from '@nextui-org/react'
 import { PageTitle } from "@/app/ui/page-components"
-import { updateList } from '@/app/lib/list-actions';
+import { edit } from '@/app/lib/list-actions';
 import { useFormState } from 'react-dom';
 
 export default function Form({list}:{list: List}) {
   const initialState = { message: '', errors: {} };
-  const updateListWithId = updateList.bind(null, list.id)
-  const [state, dispatch] = useFormState(updateListWithId, initialState);
+  const editListWithId = edit.bind(null, list.id)
+  const [state, dispatch] = useFormState(editListWithId, initialState);
 
   return (
     <form action={dispatch}>

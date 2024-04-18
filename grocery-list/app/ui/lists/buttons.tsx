@@ -10,7 +10,7 @@ import {
   ButtonGroup,
   Tooltip
 } from '@nextui-org/react'
-import { deleteList } from '@/app/lib/list-actions';
+import { remove } from '@/app/lib/list-actions';
 
 export function CreateList() {
   return (
@@ -26,7 +26,7 @@ export function CreateList() {
 }
 
 export function ActionButtons({ id }: { id: string }) {
-  const deleteListWithId = deleteList.bind(null, id);
+  const deleteListWithId = remove.bind(null, id);
   return (
     <form action={deleteListWithId}>
       <ButtonGroup>

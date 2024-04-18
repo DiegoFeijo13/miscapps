@@ -11,12 +11,12 @@ import {
   Spacer
 } from '@nextui-org/react'
 import { PageTitle } from "@/app/ui/page-components"
-import { createList } from '@/app/lib/list-actions';
+import { create } from '@/app/lib/list-actions';
 import { useFormState } from 'react-dom';
 
 export default function Form() {
   const initialState = { message: '', errors: {} };
-  const [state, dispatch] = useFormState(createList, initialState);
+  const [state, dispatch] = useFormState(create, initialState);
 
   return (
     <form action={dispatch}>
