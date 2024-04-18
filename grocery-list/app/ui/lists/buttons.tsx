@@ -1,5 +1,15 @@
-import { PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
-import { Link, Button, ButtonGroup } from '@nextui-org/react'
+import { 
+  PencilIcon, 
+  PlusIcon, 
+  TrashIcon,
+  ClipboardDocumentIcon 
+} from '@heroicons/react/24/outline';
+import {
+  Link,
+  Button,
+  ButtonGroup,
+  Tooltip
+} from '@nextui-org/react'
 import { deleteList } from '@/app/lib/list-actions';
 
 export function CreateList() {
@@ -18,25 +28,41 @@ export function CreateList() {
 export function ActionButtons({ id }: { id: string }) {
   const deleteListWithId = deleteList.bind(null, id);
   return (
-    <ButtonGroup>
-      <Button
-        isIconOnly
-        href={`/main/lists/${id}/edit`}
-        as={Link}
-        variant='light'
-      >
-        <PencilIcon className="w-5" />
-      </Button>
-      <form action={deleteListWithId}>
-      <Button
-        isIconOnly
-        type='submit'
-        color='danger'
-        variant='light'
-      >
-        <TrashIcon className="w-5" />
-      </Button>
+    <form action={deleteListWithId}>
+      <ButtonGroup>
+      <Tooltip content='Produtos'>
+        <Button
+            isIconOnly
+            href={`/main/lists/${id}/product-list`}
+            as={Link}
+            variant='light'
+          >
+            <ClipboardDocumentIcon className="w-5" />
+          </Button>
+        </Tooltip>
+
+        <Tooltip content='Editar'>
+          <Button
+            isIconOnly
+            href={`/main/lists/${id}/edit`}
+            as={Link}
+            variant='light'
+          >
+            <PencilIcon className="w-5" />
+          </Button>
+        </Tooltip>
+
+        <Tooltip content='Excluir'>
+          <Button
+            isIconOnly
+            type='submit'
+            color='danger'
+            variant='light'
+          >
+            <TrashIcon className="w-5" />
+          </Button>
+        </Tooltip>
+      </ButtonGroup>
     </form>
-    </ButtonGroup>
   );
 }

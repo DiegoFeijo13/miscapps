@@ -137,6 +137,24 @@ export async function fetchFilteredProducts(
     }
 }
 
+export async function fetchAllProducts() {
+    try {
+        const products = await sql<Product>`
+            SELECT
+                p.id,
+                p.name,
+                p.category
+            FROM products p
+            ORDER BY 
+                p.name`;
+
+        return products.rows;
+    } catch (error) {
+        console.error('Database Error:', error);
+        throw new Error(`Falha ao carregar produtos.`);
+    }
+}
+
 export async function fetchProductPages(query: string, category: string) {    
     try {
         const count = await sql`SELECT COUNT(*)
