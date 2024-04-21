@@ -3,6 +3,7 @@ import { EditListBreadcrumbs } from '@/app/ui/lists/breadcrumbs';
 import { Button, Link, Spacer } from "@nextui-org/react"
 import { title, subtitle } from "@/components/primitives"
 import { fetchListById, remove } from '@/app/lib/list-actions'
+import { CancelButton, DeleteButton } from '@/components/buttons';
 
 export default async function Page({ params }: { params: { id: string } }) {
   const id = params.id;
@@ -20,11 +21,11 @@ export default async function Page({ params }: { params: { id: string } }) {
       <Form list={list} />
 
       <Spacer y={4} />
-      <Button as={Link} className='w-full' href="/main/lists" variant='flat'>Cancelar</Button>
+      <CancelButton href="/main/lists"/>
 
       <Spacer y={4} />
       <form action={deleteListWithId}>
-        <Button className='w-full' type='submit' variant='flat' color='danger'>Excluir</Button>
+        <DeleteButton />
       </form>
     </main>
   );

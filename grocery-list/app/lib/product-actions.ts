@@ -1,16 +1,19 @@
 'use server';
 
 import { z } from 'zod';
-import { sql } from '@vercel/postgres';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import {
-    Category,
-    Product
-} from './definitions';
+    createProduct,
+    findAllCategories,
+    findAllProducts,
+    findProductById,
+    updateProduct,
+    deleteProduct
+} from './database'
+import { NewProduct, ProductUpdate } from './db_schema';
 
-const redirectToUrl = '/main/products'
-const ITEMS_PER_PAGE = 6;
+const REDIRECT_TO_URL = '/main/products'
 
 const FormSchema = z.object({
     id: z.string(),
@@ -33,7 +36,7 @@ export type State = {
     message?: string | null;
 };
 
-export async function createProduct(prevState: State, formData: FormData) {
+export async function create(prevState: State, formData: FormData) {
     const validatedFields = CreateList.safeParse({
         name: formData.get('name'),
         category: formData.get('category'),
@@ -46,24 +49,21 @@ export async function createProduct(prevState: State, formData: FormData) {
         };
     }
 
-    const { name, category } = validatedFields.data;
+    const newProduct: NewProduct = validatedFields.data;
 
     try {
-        await sql`
-            INSERT INTO products (name, category)
-            VALUES (${name}, ${category})
-        `;
-    } catch (error) {        
+        await createProduct(newProduct)
+    } catch (error) {
         return {
             message: 'Erro no Banco de Dados. Falha ao criar produto.',
         }
     }
 
-    revalidatePath(redirectToUrl);
-    redirect(redirectToUrl);
+    revalidatePath(REDIRECT_TO_URL);
+    redirect(REDIRECT_TO_URL);
 }
 
-export async function updateProduct(
+export async function update(
     id: string,
     prevState: State,
     formData: FormData) {
@@ -80,119 +80,31 @@ export async function updateProduct(
         };
     }
 
-    const { name, category } = validatedFields.data;
+    const product: ProductUpdate = validatedFields.data;
 
     try {
-        await sql`UPDATE products
-            SET name = ${name}, category = ${category}
-            WHERE id = ${id}
-        `;
+        await updateProduct(id, product)
     } catch (error) {
-        console.log(error)
         return {
             message: 'Erro no Banco de Dados. Falha ao atualizar produto.',
         }
     }
 
-    revalidatePath(redirectToUrl);
-    redirect(redirectToUrl);
+    revalidatePath(REDIRECT_TO_URL);
+    redirect(REDIRECT_TO_URL);
 }
 
-export async function fetchCategories() {
-    try {
-        const categories = await sql<Category>`SELECT DISTINCT p.category as name from products p ORDER BY 1 DESC`;
+export async function fetchCategories() { return await findAllCategories() }
 
-        return categories.rows;
-    } catch (error) {
-        console.error('Database Error:', error);
-        throw new Error('Falha ao carregar produtos.');
-    }
-}
-
-export async function fetchFilteredProducts(
-    query: string,
-    category: string,
-    currentPage: number,
-) {
-    const offset = (currentPage - 1) * ITEMS_PER_PAGE;
-
-    try {
-        const products = await sql<Product>`
-            SELECT
-                p.id,
-                p.name,
-                p.category
-            FROM products p      
-            WHERE 1=1
-                AND p.name ILIKE ${`%${query}%`}
-                AND p.category ILIKE ${`${category}`} 
-            ORDER BY 
-                p.name
-            LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}`;
-
-        return products.rows;
-    } catch (error) {
-        console.error('Database Error:', error);
-        throw new Error(`Falha ao carregar produtos. Parametros: query(${query}) category(${category}) currentPage(${currentPage})`);
-    }
-}
-
-export async function fetchAllProducts() {
-    try {
-        const products = await sql<Product>`
-            SELECT
-                p.id,
-                p.name,
-                p.category
-            FROM products p
-            ORDER BY 
-                p.name`;
-
-        return products.rows;
-    } catch (error) {
-        console.error('Database Error:', error);
-        throw new Error(`Falha ao carregar produtos.`);
-    }
-}
-
-export async function fetchProductPages(query: string, category: string) {    
-    try {
-        const count = await sql`SELECT COUNT(*)
-      FROM products p      
-      WHERE 1=1
-        AND p.name ILIKE ${`%${query}%`} 
-        AND p.category ILIKE ${`${category}`}`;
-
-        const totalPages = Math.ceil(Number(count.rows[0].count) / ITEMS_PER_PAGE);
-        return totalPages;
-    } catch (error) {
-        console.error('Database Error:', error);
-        throw new Error('Falha ao obter número total de produtos.');
-    }
-}
+export async function fetchProducts() { return await findAllProducts() }
 
 export async function fetchProductById(id: string) {
-    try {
-        const lists = await sql<Product>`
-            SELECT id, name, category
-            FROM products
-            WHERE id = ${id}`;
-
-        revalidatePath(`${redirectToUrl}/${id}/edit`)
-
-        return lists.rows[0];
-    } catch (error) {
-        console.error('Database Error:', error);
-        throw new Error(`Falha ao carregar produto. Parametros: id(${id})`);
-    }
+    return await findProductById(id) ?? { id: '', name: '', category: '' }
 }
 
-export async function deleteProduct(id: string) {
-    try {
-        await sql`DELETE FROM products WHERE id = ${id}`;
-        revalidatePath(redirectToUrl);
-        return { message: 'Produto excluído.' };
-    } catch (error) {
-        return { message: 'Database Error: Falha ao excluir produto.', }
-    }
+export async function remove(id: string) {
+    await deleteProduct(id);
+
+    revalidatePath(REDIRECT_TO_URL)
+    redirect(REDIRECT_TO_URL)
 }

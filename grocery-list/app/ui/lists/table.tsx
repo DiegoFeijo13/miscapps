@@ -28,7 +28,7 @@ export default function ListsTable({
     let filteredLists = [...lists];
 
     if (hasSearchFilter) {
-      filteredLists = filteredLists.filter((l) => 
+      filteredLists = filteredLists.filter((l) =>
         l.name.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
@@ -50,11 +50,11 @@ export default function ListsTable({
 
 
   return (
-    <>
+    <div>
       <div className="flex flex-col gap-4">
         <Input
           isClearable
-          className="w-full"
+          className="w-full mb-4"
           placeholder="Buscar listas..."
           startContent={<MagnifyingGlassIcon className='w-5' />}
           value={filterValue}
@@ -62,27 +62,20 @@ export default function ListsTable({
           onValueChange={onSearchChange}
         />
       </div>
-
-      <Spacer y={4} />
       {
 
         filteredItems.map((l) => {
-          return (
-            <>
-              <TableItem list={l} />
-              <Spacer y={4} />
-            </>
-          )
+          return (<TableItem key={l.id} list={l} />)
         })
       }
-    </>
+    </div>
   );
 }
 
-export function TableItem({ list }: { list: List }) {
+function TableItem({ list }: { list: List }) {
   return (
     <Card
-      className="w-full"
+      className="w-full mb-4"
       as={Link}
       href={`/main/lists/${list.id}/product-list`}
     >

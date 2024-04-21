@@ -3,9 +3,8 @@ export const formatDateToEdit = (date : Date) => {
   return (date.toISOString().split('T')[0])
 }
 
-
 export const formatCurrency = (amount: number) => {
-  return (amount / 100).toLocaleString('pt-br', {
+  return (amount).toLocaleString('pt-br', {
     style: 'currency',
     currency: 'BRL',
   });

@@ -5,8 +5,6 @@ import {
 } from "@nextui-org/react"
 import ToBuyTable from "./to-buy-table"
 import BoughtTable from "./bought-table"
-import { TableSkeleton, BoughtTableSkeleton } from "./skeletons"
-import { Suspense } from "react";
 import { ProductListEditVM, ProductListVM } from "@/app/lib/definitions";
 
 export default function BuyList(
@@ -24,18 +22,14 @@ export default function BuyList(
                     aria-label="Produtos para comprar"
                     title="Comprar"
                     subtitle={`${productsToBuy.length} produtos`}>
-                    <Suspense fallback={<TableSkeleton />}>
-                        <ToBuyTable products={productsToBuy} />
-                    </Suspense>
+                    <ToBuyTable products={productsToBuy} />
                 </AccordionItem>
                 <AccordionItem
                     key='bought'
                     aria-label="Produtos comprados"
                     title="Comprados"
                     subtitle={`${boughtProducts.length} produtos`}>
-                    <Suspense fallback={<BoughtTableSkeleton />}>
-                        <BoughtTable products={boughtProducts} />
-                    </Suspense>
+                    <BoughtTable products={boughtProducts} />
                 </AccordionItem>
             </Accordion>
 

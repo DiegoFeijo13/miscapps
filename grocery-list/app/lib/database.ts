@@ -28,7 +28,7 @@ export async function updateList(id: string, newValues: ListUpdate) {
         .execute()
 }
 
-export async function deleteList(id: string) {    
+export async function deleteList(id: string) {
     return await db.deleteFrom('lists')
         .where('id', '=', id)
         .returningAll()
@@ -66,7 +66,7 @@ export async function fetchProductsToBuyByList(listId: string) {
             LEFT JOIN productlist pl ON pl.product_id = p.id 
                 AND pl.list_id = ${listId}
             WHERE pl.id IS NULL
-            ORDER BY p.name`;
+            ORDER BY p.category, p.name`;
 
         return products.rows;
     } catch (error) {
@@ -79,16 +79,17 @@ export async function fetchBoughtProductsByList(listId: string) {
     return await
         db.selectFrom('productlist')
             .innerJoin('products', 'productlist.product_id', 'products.id')
-            .innerJoin('lists','lists.id', 'productlist.list_id')
+            .innerJoin('lists', 'lists.id', 'productlist.list_id')
             .where('productlist.list_id', '=', listId)
-            .orderBy('products.name')
+            .orderBy(['products.category', 'products.name'])
             .select([
                 'productlist.id',
                 'productlist.quantity',
                 'productlist.price',
                 'products.name as product_name',
                 'lists.name as list_name',
-                'lists.id as list_id'
+                'lists.id as list_id',
+                'products.category'
             ])
             .execute()
 }
@@ -123,24 +124,19 @@ export async function findProductById(id: string) {
         .executeTakeFirst()
 }
 
-export async function findAllProducts(criteria: string, limit: number | null, offSet: number | null) {
-    let query = db.selectFrom('products')
+export async function findAllProducts() {
+    return await db.selectFrom('products')
+        .orderBy('name')
+        .selectAll()
+        .execute()
+}
 
-    if (limit)
-        query.limit(limit)
-
-    if (offSet)
-        query.offset(offSet)
-
-    if (criteria && criteria.trim().length > 0) {
-        query = query.where((eb) => eb.or([
-            eb('name', 'ilike', criteria),
-            eb('category', 'ilike', criteria)
-        ]))
-            .orderBy('name')
-    }
-
-    return await query.selectAll().execute()
+export async function findAllCategories() {
+    return await db.selectFrom('products')
+        .select('category')
+        .orderBy('category')
+        .distinct()
+        .execute()
 }
 //#endregion Product Functions
 
@@ -168,8 +164,8 @@ export async function deleteProductList(id: string) {
 
 export async function findProductListById(id: string) {
     return await db.selectFrom('productlist')
-    .innerJoin('products', 'productlist.product_id', 'products.id')    
-    .innerJoin('lists', 'productlist.list_id', 'lists.id')
+        .innerJoin('products', 'productlist.product_id', 'products.id')
+        .innerJoin('lists', 'productlist.list_id', 'lists.id')
         .where('productlist.id', '=', id)
         .select([
             'productlist.id',
@@ -177,7 +173,8 @@ export async function findProductListById(id: string) {
             'productlist.price',
             'products.name as product_name',
             'lists.name as list_name',
-            'lists.id as list_id'
+            'lists.id as list_id',
+            'products.category'
         ])
         .executeTakeFirst()
 

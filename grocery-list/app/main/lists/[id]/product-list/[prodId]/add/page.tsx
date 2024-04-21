@@ -1,8 +1,10 @@
 import Form from '@/app/ui/product-list/create-form';
 import { CreateProductListBreadcrumbs } from '@/app/ui/product-list/breadcrumbs';
-import {Spacer} from "@nextui-org/react"
+import {Button, Link, Spacer} from "@nextui-org/react"
 import {fetchListById} from '@/app/lib/list-actions'
 import {fetchProductById} from '@/app/lib/product-actions'
+import { title } from '@/components/primitives';
+import { CancelButton } from '@/components/buttons';
  
 export default async function Page({ params }: { params: { id: string, prodId: string } }) {  
 
@@ -13,7 +15,15 @@ export default async function Page({ params }: { params: { id: string, prodId: s
     <main>
       <CreateProductListBreadcrumbs list={list} product={product}/>
       <Spacer y={4}/>
+
+      <h1 className={title()}>Comprando produto </h1>
+
+      <h1 className={title({ color: 'violet' })}>{product.name}</h1>
+      
       <Form list={list} product={product}/>
+      
+      <Spacer y={4} />
+      <CancelButton href={`/main/lists/${list.id}/product-list`} />
     </main>
   );
 }

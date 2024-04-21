@@ -11,9 +11,13 @@ import {
   Button,
   Link,
   Tooltip,
-  Input
+  Input,
+  Card,
+  CardHeader,
+  Spacer
 } from '@nextui-org/react';
 import { PencilIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
+import { formatCurrency } from '@/app/lib/utils';
 
 export default function BoughtTable({
   products
@@ -23,23 +27,6 @@ export default function BoughtTable({
   const [filterValue, setFilterValue] = React.useState("");
   const hasSearchFilter = Boolean(filterValue);
 
-  const renderActions = ((pl: ProductListEditVM) => {        
-      return (
-        <Tooltip content='Editar'>
-          <Button
-            isIconOnly
-            size='sm'
-            color='default'
-            href={`/main/lists/${pl.list_id}/product-list/${pl.id}/edit`}
-            as={Link}
-          >
-            <PencilIcon className="w-3" />
-          </Button>
-        </Tooltip>
-      );
-    }  
-  );
-
   const filteredItems = React.useMemo(() => {
     let filteredProducts = [...products];
 
@@ -47,26 +34,27 @@ export default function BoughtTable({
       filteredProducts = filteredProducts.filter((p) =>
         p.product_name.toLowerCase().includes(filterValue.toLowerCase()),
       );
-    } 
+    }
 
     return filteredProducts;
   }, [products, filterValue]);
 
   const onSearchChange = React.useCallback((value?: string) => {
     if (value) {
-      setFilterValue(value);      
+      setFilterValue(value);
     } else {
       setFilterValue("");
     }
   }, []);
 
-  const onClear = React.useCallback(()=>{
-    setFilterValue("")    
-  },[])
+  const onClear = React.useCallback(() => {
+    setFilterValue("")
+  }, [])
 
-  const topContent = React.useMemo(() => {
-    return (
-      <div className="flex flex-col gap-4">
+  return (
+    <>
+      {products.length > 0 ?
+        <div className="flex flex-col gap-4">
           <Input
             isClearable
             className="w-full sm:max-w-[44%]"
@@ -76,39 +64,44 @@ export default function BoughtTable({
             onClear={() => onClear()}
             onValueChange={onSearchChange}
           />
-      </div>
-    );
-  }, [
-    filterValue,
-    onSearchChange,    
-    products.length,
-    hasSearchFilter,
-  ]);
+        </div> : ''}
+      <Spacer y={4} />
 
+
+      {
+        filteredItems.map((p) => {
+          return (
+            <>
+              <TableItem pl={p} />
+              <Spacer y={4} />
+            </>
+          )
+        }
+        )
+      }
+
+
+    </>
+  )
+}
+
+function TableItem({ pl }: { pl: ProductListEditVM }) {
   return (
-    <Table 
-    removeWrapper 
-    isHeaderSticky
-    topContent={topContent}
-    topContentPlacement='outside'    
-    aria-label="Tabela de produtos na lista de compra">
-      <TableHeader>
-        <TableColumn key='name' align='start'>Produto</TableColumn>
-        <TableColumn key='quantity' align='start'>Qtd</TableColumn>
-        <TableColumn key='price' align='start'>$</TableColumn>
-        <TableColumn key='actions' align='end'>Ações</TableColumn>
-      </TableHeader>
-      <TableBody
-        emptyContent={"Sem produtos aqui."}>
-        {filteredItems.map((p) => (
-          <TableRow key={p.id}>
-            <TableCell>{p.product_name}</TableCell>
-            <TableCell>{p.quantity}</TableCell>
-            <TableCell>{p.price}</TableCell>
-            <TableCell>{renderActions(p)}</TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-  );
+    <Card
+      className="w-full"
+      as={Link}
+      href={`/main/lists/${pl.list_id}/product-list/${pl.id}/edit`}
+    >
+      <CardHeader className="justify-between">
+        <div className="flex gap-5">
+          <div className="flex flex-col gap-1 items-start justify-center">
+            <h4 className="text-small font-semibold leading-none text-default-600">{pl.product_name}</h4>
+            <h5 className="text-small tracking-tight text-default-400">{pl.category}</h5>
+          </div>
+        </div>
+        <h5 className="text-small tracking-tight text-default-400">{pl.quantity}</h5>
+        <h5 className="text-small tracking-tight text-default-400">{formatCurrency(pl.price)}</h5>
+      </CardHeader>
+    </Card>
+  )
 }

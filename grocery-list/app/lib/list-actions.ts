@@ -9,7 +9,7 @@ import {
     findAllLists,
     findListById,
     updateList,
-    deleteList,    
+    deleteList,
     fetchBoughtProductsByList,
     fetchProductsToBuyByList
 } from './database'
@@ -59,7 +59,7 @@ export async function create(prevState: State, formData: FormData) {
     }
 
     try {
-        createList(list)
+        await createList(list)
 
     } catch (error) {
         return {
@@ -108,11 +108,7 @@ export async function edit(
     redirect(REDIRECT_TO_URL);
 }
 
-export async function fetchLists() {
-    
-
-    return findAllLists();
-}
+export async function fetchLists() { return findAllLists() }
 
 export async function fetchListById(id: string) {
     try {
@@ -128,7 +124,7 @@ export async function fetchListById(id: string) {
 }
 
 export async function remove(id: string) {
-    deleteList(id);
+    await deleteList(id);
 
     revalidatePath(REDIRECT_TO_URL)
     redirect(REDIRECT_TO_URL)

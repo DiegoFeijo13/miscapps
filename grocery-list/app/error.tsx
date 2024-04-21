@@ -1,5 +1,6 @@
 'use client' 
  
+import { title } from '@/components/primitives'
 import { useEffect } from 'react'
  
 export default function Error({
@@ -15,7 +16,7 @@ export default function Error({
  
   return (
     <div>
-      <h2>Algo deu errado!</h2>
+      <h2 className={title()}>Algo deu errado!</h2>
       <button
         onClick={() => reset()}
       >

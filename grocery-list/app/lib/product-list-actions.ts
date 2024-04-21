@@ -104,11 +104,12 @@ export async function edit(
 }
 
 export async function remove(id: string) {
-    deleteProductList(id);
+    const productList = await fetchById(id);
 
-    //TODO: retornar pra qual URL?    
-    revalidatePath(REDIRECT_TO_URL(id))
-    redirect(REDIRECT_TO_URL(id))
+    deleteProductList(id);
+    
+    revalidatePath(REDIRECT_TO_URL(productList.list_id))
+    redirect(REDIRECT_TO_URL(productList.list_id))
 }
 
 export async function fetchById(id: string) {
@@ -121,7 +122,8 @@ export async function fetchById(id: string) {
                 list_id: '', 
                 list_name: '',
                 price: 0, 
-                quantity: 0,                
+                quantity: 0,    
+                category: ''            
             }
 
         if (result.list_id && result.list_id.trim().length > 0)

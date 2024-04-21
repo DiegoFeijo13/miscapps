@@ -2,18 +2,13 @@
 import React from 'react';
 import { ProductListVM } from '@/app/lib/definitions'
 import {
-  Table,
-  TableHeader,
-  TableBody,
-  TableRow,
-  TableCell,
-  TableColumn,
-  Button,
   Link,
-  Tooltip,
-  Input
+  Input,
+  Card,
+  CardHeader,
+  Spacer
 } from '@nextui-org/react';
-import { CheckIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
+import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 
 export default function ToBuyTable({
   products
@@ -22,22 +17,6 @@ export default function ToBuyTable({
 }) {
   const [filterValue, setFilterValue] = React.useState("");
   const hasSearchFilter = Boolean(filterValue);
-
-  const renderActions = ((product: ProductListVM) => {
-    return (
-      <Tooltip content='Comprar'>
-        <Button
-          isIconOnly
-          size='sm'
-          color='success'
-          href={`/main/lists/${product.list_id}/product-list/${product.product_id}/add`}
-          as={Link}
-        >
-          <CheckIcon className="w-3" />
-        </Button>
-      </Tooltip>
-    );
-  });
 
   const filteredItems = React.useMemo(() => {
     let filteredProducts = [...products];
@@ -63,47 +42,57 @@ export default function ToBuyTable({
     setFilterValue("")
   }, [])
 
-  const topContent = React.useMemo(() => {
-    return (
-      <div className="flex flex-col gap-4">
-        <Input
-          isClearable
-          className="w-full sm:max-w-[44%]"
-          placeholder="Buscar produtos..."
-          startContent={<MagnifyingGlassIcon className='w-5' />}
-          value={filterValue}
-          onClear={() => onClear()}
-          onValueChange={onSearchChange}
-        />
-      </div>
-    );
-  }, [
-    filterValue,
-    onSearchChange,
-    products.length,
-    hasSearchFilter,
-  ]);
+
 
   return (
-    <Table
-      removeWrapper
-      isHeaderSticky
-      topContent={topContent}
-      topContentPlacement='outside'
-      aria-label="Tabela de produtos na lista de compra">
-      <TableHeader>
-        <TableColumn key='prod_name' align='start'>Produto</TableColumn>
-        <TableColumn key='actions' align='end'>Ações</TableColumn>
-      </TableHeader>
-      <TableBody
-        emptyContent={"Sem produtos aqui."}>
-        {filteredItems.map((p) => (
-          <TableRow key={p.product_id}>
-            <TableCell>{p.name}</TableCell>
-            <TableCell>{renderActions(p)}</TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+    <>
+      {products.length > 0 ?
+        <div className="flex flex-col gap-4">
+          <Input
+            isClearable
+            className="w-full"
+            placeholder="Buscar produtos..."
+            startContent={<MagnifyingGlassIcon className='w-5' />}
+            value={filterValue}
+            onClear={() => onClear()}
+            onValueChange={onSearchChange}
+          />
+        </div> : ''}
+      <Spacer y={4} />
+
+
+      {
+        filteredItems.map((p) => {
+          return (
+            <>
+              <TableItem key={p.product_id} product={p} />
+              <Spacer y={4} />
+            </>
+          )
+        }
+        )
+      }
+
+
+    </>
   );
+}
+
+function TableItem({ product }: { product: ProductListVM }) {
+  return (
+    <Card      
+      className="w-full"
+      as={Link}
+      href={`/main/lists/${product.list_id}/product-list/${product.product_id}/add`}
+    >
+      <CardHeader className="justify-between">
+        <div className="flex gap-5">
+          <div className="flex flex-col gap-1 items-start justify-center">
+            <h4 className="text-small font-semibold leading-none text-default-600">{product.name}</h4>
+          </div>
+        </div>
+        <h5 className="text-small tracking-tight text-default-400">{product.category}</h5>
+      </CardHeader>
+    </Card>
+  )
 }

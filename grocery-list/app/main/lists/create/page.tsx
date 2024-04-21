@@ -2,6 +2,7 @@ import Form from '@/app/ui/lists/create-form';
 import { CreateListBreadcrumbs } from '@/app/ui/lists/breadcrumbs';
 import {Button, Link, Spacer} from "@nextui-org/react"
 import { title } from "@/components/primitives"
+import { CancelButton } from '@/components/buttons';
  
 export default async function Page() {  
  
@@ -15,14 +16,7 @@ export default async function Page() {
       <Form/>
       
       <Spacer y={4}/>
-      <Button
-        as={Link}
-        href="/main/lists"
-        variant='flat'
-        className='w-full'
-      >
-        Cancelar
-      </Button>
+      <CancelButton href="/main/lists"/>
     </main>
   );
 }

@@ -25,7 +25,8 @@ export type ProductListEditVM = {
   id: string;
   quantity: number;
   price: number;  
-  product_name: string;  
+  product_name: string; 
+  category: string; 
   list_name: string;
   list_id: string;
 };
