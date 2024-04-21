@@ -1,8 +1,8 @@
 'use client'
 
-import {List} from "@/app/lib/definitions"
+import { List } from "@/app/lib/definitions"
 import {
-  ClipboardDocumentListIcon,
+  ListBulletIcon,
   CalendarDaysIcon
 } from '@heroicons/react/24/outline';
 import {
@@ -11,54 +11,50 @@ import {
   Button,
   Spacer
 } from '@nextui-org/react'
-import { PageTitle } from "@/app/ui/page-components"
 import { edit } from '@/app/lib/list-actions';
 import { useFormState } from 'react-dom';
+import { formatDateToEdit } from "@/app/lib/utils";
 
-export default function Form({list}:{list: List}) {
+export default function Form({ list }: { list: List }) {
   const initialState = { message: '', errors: {} };
   const editListWithId = edit.bind(null, list.id)
   const [state, dispatch] = useFormState(editListWithId, initialState);
 
   return (
-    <form action={dispatch}>
-      <div className="rounded-md bg-gray-50 p-4 md:p-6">
-        <PageTitle title="Editar Lista" />
+    <form action={dispatch}>      
+      <Input
+        type='text'
+        label='Nome'
+        name='name'
+        aria-label='Nome da lista'
+        defaultValue={list.name}        
+        isInvalid={state?.errors?.name != undefined}
+        errorMessage={state?.errors?.name &&
+          state.errors.name.map((error: string) => (`${error}`))}
+        startContent={
+          <ListBulletIcon className="w-5" />
+        }
+      />
 
-        <Spacer y={4} />
-        <Input
-          type='text'          
-          label='Nome'
-          name='name'
-          defaultValue={list.name}
-          placeholder='Como deseja identificar a lista?'
-          isInvalid={state?.errors?.name != undefined}
-          errorMessage={state?.errors?.name &&
-            state.errors.name.map((error: string) => (`${error}`))}
-          startContent={
-            <ClipboardDocumentListIcon className="w-5"></ClipboardDocumentListIcon>
-          }
-        />
+      <Spacer y={4} />
+      <Input
+        type='date'
+        label='Data'
+        name='date'
+        aria-label='Data da lista'
+        defaultValue={formatDateToEdit(new Date(list.buy_dt))}        
+        isInvalid={state?.errors?.date != undefined}
+        errorMessage={state?.errors?.date &&
+          state.errors.date.map((error: string) => (`${error}`))}
+        startContent={
+          <CalendarDaysIcon className="w-5" />
+        }
+      />
 
-        <Spacer y={4} />
-        <Input
-          type='date'
-          label='Data'
-          name='date'
-          defaultValue={new Date(list.buy_dt).toISOString().split('T')[0]}
-          placeholder='Quando a compra será feita?'
-          isInvalid={state?.errors?.date != undefined}
-          errorMessage={state?.errors?.date &&
-            state.errors.date.map((error: string) => (`${error}`))}
-          startContent={
-            <CalendarDaysIcon className="w-5"></CalendarDaysIcon>
-          }
-        />
-      </div>
-      <div className="mt-6 flex justify-end gap-4">
-        <Button as={Link} href="/main/lists" variant='flat'>Cancelar</Button>
-        <Button type="submit" color='primary'> Atualizar</Button>
-      </div>
+      <Spacer y={4} />
+      
+      <Button className="w-full" type="submit" color='primary'> Atualizar</Button>
+
     </form>
   );
 }

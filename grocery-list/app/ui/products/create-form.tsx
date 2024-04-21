@@ -10,7 +10,7 @@ import {
   Button,
   Spacer
 } from '@nextui-org/react'
-import { PageTitle } from "@/app/ui/page-components"
+import { title } from "@/components/primitives"
 import { createProduct } from '@/app/lib/product-actions';
 import { useFormState } from 'react-dom';
 
@@ -21,7 +21,7 @@ export default function Form() {
   return (
     <form action={dispatch}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
-        <PageTitle title="Novo Produto" />
+        <h1 className={title()}>Novo Produto</h1>
 
         <Spacer y={4} />
         <Input

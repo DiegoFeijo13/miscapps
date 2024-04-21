@@ -1,12 +1,7 @@
-import { PageTitle } from "@/app/ui/page-components"
-import Pagination from '@/app/ui/pagination';
-import Search from '@/app/ui/search';
+import { title } from "@/components/primitives"
 import Table from '@/app/ui/lists/table';
 import { CreateList } from '@/app/ui/lists/buttons';
-import {
-  fetchListPages,
-  fetchFilteredLists
-} from '@/app/lib/list-actions'
+import { fetchLists } from '@/app/lib/list-actions'
 import { TableSkeleton } from '@/app/ui/lists/skeletons';
 import { Suspense } from 'react';
 import { Spacer } from "@nextui-org/spacer"
@@ -19,25 +14,17 @@ export default async function Page({
     page?: string;
   };
 }) {
-  const query = searchParams?.query || '';
-  const currentPage = Number(searchParams?.page) || 1;
-  const totalPages = await fetchListPages(query);
-  const lists = await fetchFilteredLists(query, currentPage);  
-  
+  const lists = await fetchLists();
+
   return (
     <>
-      <PageTitle title="Listas"/>
-      <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
-        <Search placeholder="Buscar listas..." />
-        <CreateList />
-      </div>
+      <h1 className={title()}>Listas</h1>
       <Spacer y={4} />
-      <Suspense key={query + currentPage} fallback={<TableSkeleton />}>
+      <CreateList />
+      <Spacer y={4} />
+      <Suspense fallback={<TableSkeleton />}>
         <Table lists={lists} />
       </Suspense>
-      <div className="mt-5 flex w-full justify-center">
-        <Pagination totalPages={totalPages} />
-      </div>
     </>
   );
 }

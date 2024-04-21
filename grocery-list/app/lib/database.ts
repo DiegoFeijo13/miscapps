@@ -28,7 +28,7 @@ export async function updateList(id: string, newValues: ListUpdate) {
         .execute()
 }
 
-export async function deleteList(id: string) {
+export async function deleteList(id: string) {    
     return await db.deleteFrom('lists')
         .where('id', '=', id)
         .returningAll()
@@ -43,21 +43,8 @@ export async function findListById(id: string) {
 
 }
 
-export async function findAllLists(criteria: string, limit: number | null, offset: number | null) {
+export async function findAllLists() {
     let query = db.selectFrom('lists')
-
-    if (limit)
-        query.limit(limit)
-
-    if (offset)
-        query.offset(offset)
-
-    if (criteria && criteria.trim().length > 0) {
-        query.where((eb) => eb.or([
-            eb('name', 'ilike', criteria),
-            eb('buy_dt', 'ilike', criteria)
-        ]))
-    }
 
     return await query.orderBy('buy_dt', 'desc')
         .selectAll()

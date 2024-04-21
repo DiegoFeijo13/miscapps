@@ -1,4 +1,4 @@
-import { PageTitle } from "@/app/ui/page-components"
+import { title } from "@/components/primitives"
 import Pagination from '@/app/ui/pagination';
 import Search from '@/app/ui/search';
 import Table from '@/app/ui/products/table';
@@ -31,7 +31,7 @@ export default async function Page({
 
   return (
     <>
-      <PageTitle title="Produtos"/>
+      <h1 className={title()}>Produtos</h1>
       <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
         <Search placeholder="Buscar produtos..." />
         <CreateProduct />

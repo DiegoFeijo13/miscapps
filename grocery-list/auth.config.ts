@@ -9,12 +9,11 @@ export const authConfig = {
             const isLoggedIn = !!auth?.user;
             const isOnMain = nextUrl.pathname.startsWith('/main');
             if (isOnMain) {
-                if (isLoggedIn) return true;
-                return false; // Redirect unauthenticated users to login page
+                return isLoggedIn;
             } else if (isLoggedIn) {
                 return Response.redirect(new URL('/main/lists', nextUrl));
-            }
-            return true;
+            }            
+            return isLoggedIn;
         },
     },
     providers: [], // Add providers with an empty array for now

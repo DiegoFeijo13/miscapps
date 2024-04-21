@@ -108,19 +108,10 @@ export async function edit(
     redirect(REDIRECT_TO_URL);
 }
 
-export async function fetchFilteredLists(
-    query: string,
-    currentPage: number,
-) {
-    const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+export async function fetchLists() {
+    
 
-    return findAllLists(query, ITEMS_PER_PAGE, offset);
-}
-
-export async function fetchListPages(query: string) {
-    let count = (await findAllLists(query, null, null)).length;
-
-    return Math.ceil(count / ITEMS_PER_PAGE)
+    return findAllLists();
 }
 
 export async function fetchListById(id: string) {

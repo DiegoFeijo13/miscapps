@@ -1,43 +1,109 @@
 "use client"
 
 import {
-  Table,
-  TableHeader,
-  TableColumn,
-  TableBody,
-  TableRow,
-  TableCell
+  Card,
+  CardHeader,
+  Button,
+  Link,
+  Spacer,
+  Input
 } from "@nextui-org/react";
-import { ActionButtons } from '@/app/ui/lists/buttons';
 import { List } from '@/app/lib/definitions'
+import { formatDateToLocal } from "@/app/lib/utils";
+import React from "react";
+import { MagnifyingGlassIcon } from "@heroicons/react/16/solid";
 
-export default async function ListsTable({
+
+
+
+export default function ListsTable({
   lists
 }: {
-  lists: List[];
+  lists: List[],
 }) {
-  return (
+  const [filterValue, setFilterValue] = React.useState("");
+  const hasSearchFilter = Boolean(filterValue);
 
-    <Table>
-      <TableHeader>
-        <TableColumn width={'50%'}>Nome</TableColumn>
-        <TableColumn width={'30%'}>Data</TableColumn>
-        <TableColumn width={'20%'} align="end">Ações</TableColumn>
-      </TableHeader>
-      <TableBody
-        emptyContent={"Sem listas aqui."}>
-        {lists?.map((l) => (
-          <TableRow key={l.id}>
-            <TableCell>{l.name}</TableCell>
-            <TableCell>
-              {new Date(l.buy_dt).toLocaleDateString("pt-br")}
-            </TableCell>
-            <TableCell>
-              <ActionButtons id={l.id} />
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+  const filteredItems = React.useMemo(() => {
+    let filteredLists = [...lists];
+
+    if (hasSearchFilter) {
+      filteredLists = filteredLists.filter((l) => 
+        l.name.toLowerCase().includes(filterValue.toLowerCase())
+      );
+    }
+
+    return filteredLists;
+  }, [lists, filterValue]);
+
+  const onSearchChange = React.useCallback((value?: string) => {
+    if (value) {
+      setFilterValue(value);
+    } else {
+      setFilterValue("");
+    }
+  }, []);
+
+  const onClear = React.useCallback(() => {
+    setFilterValue("")
+  }, [])
+
+
+  return (
+    <>
+      <div className="flex flex-col gap-4">
+        <Input
+          isClearable
+          className="w-full"
+          placeholder="Buscar listas..."
+          startContent={<MagnifyingGlassIcon className='w-5' />}
+          value={filterValue}
+          onClear={() => onClear()}
+          onValueChange={onSearchChange}
+        />
+      </div>
+
+      <Spacer y={4} />
+      {
+
+        filteredItems.map((l) => {
+          return (
+            <>
+              <TableItem list={l} />
+              <Spacer y={4} />
+            </>
+          )
+        })
+      }
+    </>
   );
+}
+
+export function TableItem({ list }: { list: List }) {
+  return (
+    <Card
+      className="w-full"
+      as={Link}
+      href={`/main/lists/${list.id}/product-list`}
+    >
+      <CardHeader className="justify-between">
+        <div className="flex gap-5">
+          <div className="flex flex-col gap-1 items-start justify-center">
+            <h4 className="text-small font-semibold leading-none text-default-600">{list.name}</h4>
+            <h5 className="text-small tracking-tight text-default-400">{formatDateToLocal(list.buy_dt)}</h5>
+          </div>
+        </div>
+        <Button
+          as={Link}
+          href={`/main/lists/${list.id}/edit`}
+          color="primary"
+          radius="full"
+          size="sm"
+          variant="solid"
+        >
+          Editar
+        </Button>
+      </CardHeader>
+    </Card>
+  )
 }

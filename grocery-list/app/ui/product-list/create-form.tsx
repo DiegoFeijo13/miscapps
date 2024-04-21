@@ -10,7 +10,7 @@ import {
   Button,
   Spacer
 } from '@nextui-org/react'
-import { PageTitle } from "@/app/ui/page-components"
+import { title } from "@/components/primitives"
 import { create } from '@/app/lib/product-list-actions';
 import { useFormState } from 'react-dom';
 import { List, Product } from '@/app/lib/definitions';
@@ -25,7 +25,7 @@ export default function Form({product, list}:{product:Product, list: List}) {
       <input type='hidden' name='product_id' value={product.id} />
       
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
-        <PageTitle title={`Comprando produto ${product.name}`} />
+        <h1 className={title()}>{`Comprando produto ${product.name}`}</h1>
 
         <Spacer y={4} />
         <Input

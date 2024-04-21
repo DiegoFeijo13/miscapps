@@ -1,4 +1,4 @@
-import { PageTitle } from "@/app/ui/page-components"
+import { title } from "@/components/primitives"
 import BuyList from '@/app/ui/product-list/buy-list';
 import { Spacer } from "@nextui-org/react"
 import {
@@ -15,7 +15,7 @@ export default async function Page({ params }:{params: { id: string }}) {
   const boughtProducts = await getBoughtProducts(listId)
   return (
     <div className='mb-2 w-full rounded-md bg-white p-4'>
-      <PageTitle title={`Comprando a lista "${list.name}"`} />
+      <h1 className={title()}>{`Comprando a lista "${list.name}"`}</h1>
       <Spacer y={4} />
 
       <BuyList boughtProducts={boughtProducts} productsToBuy={productsToBuy} />

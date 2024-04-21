@@ -1,6 +1,7 @@
 import Form from '@/app/ui/lists/create-form';
 import { CreateListBreadcrumbs } from '@/app/ui/lists/breadcrumbs';
-import {Spacer} from "@nextui-org/react"
+import {Button, Link, Spacer} from "@nextui-org/react"
+import { title } from "@/components/primitives"
  
 export default async function Page() {  
  
@@ -8,7 +9,20 @@ export default async function Page() {
     <main>
       <CreateListBreadcrumbs/>
       <Spacer y={4}/>
+      <h1 className={title()}>Nova Lista</h1>
+      
+      <Spacer y={4} />
       <Form/>
+      
+      <Spacer y={4}/>
+      <Button
+        as={Link}
+        href="/main/lists"
+        variant='flat'
+        className='w-full'
+      >
+        Cancelar
+      </Button>
     </main>
   );
 }
