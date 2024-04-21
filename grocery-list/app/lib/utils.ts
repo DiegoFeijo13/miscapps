@@ -5,6 +5,13 @@ export const formatCurrency = (amount: number) => {
   });
 };
 
+export const formatNumber = (amount: number) => {
+  return (amount).toLocaleString('pt-br', {
+    style: 'amount',
+    currency: 'BRL',
+  });
+};
+
 export const formatDateToLocal = (
   dateStr: string,
   locale: string = 'pt-br',

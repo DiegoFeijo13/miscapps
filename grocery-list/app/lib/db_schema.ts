@@ -8,7 +8,7 @@ import {
 
 export interface Database {    
     products: ProductsTable
-    productList: ProductListTable
+    productlist: ProductListTable
     lists: ListsTable
 }
 
@@ -26,9 +26,8 @@ export interface ProductListTable {
     id: Generated<string>;
     product_id: string;
     list_id: string;
-    quantity: number | null;
-    price: number | null;
-    bought: boolean | null;
+    quantity: number;
+    price: number;
 }
 
 export type ProductList = Selectable<ProductListTable>

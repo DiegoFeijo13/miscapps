@@ -9,7 +9,9 @@ import {
     findAllLists,
     findListById,
     updateList,
-    deleteList
+    deleteList,    
+    fetchBoughtProductsByList,
+    fetchProductsToBuyByList
 } from './database'
 
 const REDIRECT_TO_URL = '/main/lists'
@@ -58,6 +60,7 @@ export async function create(prevState: State, formData: FormData) {
 
     try {
         createList(list)
+
     } catch (error) {
         return {
             message: 'Erro no Banco de Dados. Falha ao criar lista.',
@@ -115,23 +118,37 @@ export async function fetchFilteredLists(
 }
 
 export async function fetchListPages(query: string) {
-    return (await findAllLists(query, null, null)).length;
+    let count = (await findAllLists(query, null, null)).length;
 
+    return Math.ceil(count / ITEMS_PER_PAGE)
 }
 
 export async function fetchListById(id: string) {
+    try {
+        let result = await findListById(id)
 
-    let result = findListById(id)
+        revalidatePath(`${REDIRECT_TO_URL}/${id}/edit`)
 
-    revalidatePath(`${REDIRECT_TO_URL}/${id}/edit`)
-
-    return result;
+        return result ?? { id: '', name: '', buy_dt: '' };
+    } catch (error) {
+        console.error('Database Error:', error);
+        throw new Error(`Falha ao carregar lista. Parametros: id(${id})`);
+    }
 }
 
-export async function remove(id: string) {    
+export async function remove(id: string) {
     deleteList(id);
 
     revalidatePath(REDIRECT_TO_URL)
     redirect(REDIRECT_TO_URL)
+}
+
+export async function getListProducts(listId: string) {
+
+    return fetchProductsToBuyByList(listId);
+}
+
+export async function getBoughtProducts(listId: string) {
+    return fetchBoughtProductsByList(listId);
 }
 

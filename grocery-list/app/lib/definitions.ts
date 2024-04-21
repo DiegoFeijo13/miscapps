@@ -11,13 +11,23 @@ export type Product = {
   category: string;
 };
 
-export type ProductList = {
-  id: string;
+export type ProductListVM = {
+  productList_id: string | null;
+  quantity: number | null;
+  price: number | null;  
+  name: string;
+  category: string;
   product_id: string;
-  list_id: string;
+  list_id: string | null;
+};
+
+export type ProductListEditVM = {
+  id: string;
   quantity: number;
-  price: number;
-  bought: boolean;
+  price: number;  
+  product_name: string;  
+  list_name: string;
+  list_id: string;
 };
 
 export type Category = {

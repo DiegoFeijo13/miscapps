@@ -24,7 +24,8 @@ export default async function ListsTable({
         <TableColumn width={'30%'}>Data</TableColumn>
         <TableColumn width={'20%'} align="end">Ações</TableColumn>
       </TableHeader>
-      <TableBody>
+      <TableBody
+        emptyContent={"Sem listas aqui."}>
         {lists?.map((l) => (
           <TableRow key={l.id}>
             <TableCell>{l.name}</TableCell>

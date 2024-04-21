@@ -30,9 +30,10 @@ export function ActionButtons({ id }: { id: string }) {
   return (
     <form action={deleteListWithId}>
       <ButtonGroup>
-      <Tooltip content='Produtos'>
+      <Tooltip content='Comprar'>
         <Button
             isIconOnly
+            color='primary'
             href={`/main/lists/${id}/product-list`}
             as={Link}
             variant='light'
