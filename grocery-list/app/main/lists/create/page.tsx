@@ -1,5 +1,5 @@
-import Form from '@/app/ui/lists/create-form';
-import { CreateListBreadcrumbs } from '@/app/ui/lists/breadcrumbs';
+import Form from '@/components/lists/create-form';
+import { CreateListBreadcrumbs } from '@/components/lists/breadcrumbs';
 import {Button, Link, Spacer} from "@nextui-org/react"
 import { title } from "@/components/primitives"
 import { CancelButton } from '@/components/buttons';

@@ -63,8 +63,6 @@ export async function create(prevState: State, formData: FormData) {
         }
     }
 
-    console.log(REDIRECT_TO_URL(productList.list_id))
-
     revalidatePath(REDIRECT_TO_URL(productList.list_id));
     redirect(REDIRECT_TO_URL(productList.list_id));
 }
@@ -80,8 +78,7 @@ export async function edit(
         price: formData.get('price'),
     });
 
-    if (!validatedFields.success) {
-        console.log(validatedFields.error.flatten().fieldErrors)
+    if (!validatedFields.success) {        
         return {
             errors: validatedFields.error.flatten().fieldErrors,
             message: 'Campos em branco. Falha ao atualizar dados da compra.',
@@ -92,8 +89,7 @@ export async function edit(
 
     try {
         updateProductList(id, productList)
-    } catch (error) {
-        console.log(error)
+    } catch (error) {        
         return {
             message: 'Erro no Banco de Dados. Falha ao atualizar dados da compra.',
         }

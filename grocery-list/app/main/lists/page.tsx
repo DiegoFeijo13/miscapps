@@ -1,5 +1,5 @@
 import { title } from "@/components/primitives"
-import Table from '@/app/ui/lists/table';
+import Table from '@/components/lists/table';
 import { CreateButton } from '@/components/buttons';
 import { fetchLists } from '@/app/lib/list-actions'
 import { Spacer } from "@nextui-org/spacer"

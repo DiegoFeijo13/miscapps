@@ -15,10 +15,11 @@ export type ProductListVM = {
   productList_id: string | null;
   quantity: number | null;
   price: number | null;  
-  name: string;
+  product_name: string;
   category: string;
   product_id: string;
-  list_id: string | null;
+  list_id: string;
+  done: boolean;
 };
 
 export type ProductListEditVM = {

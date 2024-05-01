@@ -1,3 +1,5 @@
+"use client"
+
 import {
 	Navbar as NextUINavbar,
 	NavbarContent,
@@ -12,15 +14,15 @@ import { link as linkStyles } from "@nextui-org/theme";
 import { siteConfig } from "@/config/site";
 import NextLink from "next/link";
 import clsx from "clsx";
-import { ThemeSwitch } from "@/components/theme-switch";
-import { ListBulletIcon, PowerIcon } from '@heroicons/react/16/solid'
-import { signOut } from "@/auth";
-import { Button } from "@nextui-org/react";
+import { ListBulletIcon } from '@heroicons/react/16/solid'
 
-export const Navbar = () => {
+import React from "react";
+
+export const Navbar = ({ logoutButton }: { logoutButton: React.ReactNode }) => {
+	const [isMenuOpen, setIsMenuOpen] = React.useReducer((current) => !current, false)
 
 	return (
-		<NextUINavbar maxWidth="xl" position="sticky">
+		<NextUINavbar maxWidth="xl" position="sticky" isMenuOpen={isMenuOpen} onMenuOpenChange={setIsMenuOpen}>
 			<NavbarContent className="basis-1/5 sm:basis-full" justify="start">
 				<NavbarBrand as="li" className="gap-3 max-w-fit">
 					<NextLink
@@ -55,28 +57,11 @@ export const Navbar = () => {
 				justify="end"
 			>
 				<NavbarItem>
-					<form
-						action={async () => {
-							'use server';
-							await signOut();
-						}}
-					>
-						<Button
-							isIconOnly
-							variant="light"
-							type="submit"
-						>
-							<PowerIcon className="w-5" />
-						</Button>
-					</form>
-				</NavbarItem>
-				<NavbarItem className="hidden sm:flex gap-2">
-					<ThemeSwitch />
+					{logoutButton}
 				</NavbarItem>
 			</NavbarContent>
 
-			<NavbarContent className="sm:hidden basis-1 pl-4" justify="end">
-				<ThemeSwitch />
+			<NavbarContent className="sm:hidden basis-1 pl-4" justify="end">				
 				<NavbarMenuToggle />
 			</NavbarContent>
 
@@ -85,9 +70,10 @@ export const Navbar = () => {
 					{siteConfig.navItems.map((item, index) => (
 						<NavbarMenuItem key={`${item}-${index}`}>
 							<Link
-								color={index === 2 ? "danger" : "foreground"}
+								color="foreground"
 								href={item.href}
 								size="lg"
+								onPress={() => setIsMenuOpen()}
 							>
 								{item.label}
 							</Link>

@@ -28,6 +28,7 @@ export interface ProductListTable {
     list_id: string;
     quantity: number;
     price: number;
+    done: boolean;
 }
 
 export type ProductList = Selectable<ProductListTable>

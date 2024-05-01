@@ -1,5 +1,5 @@
-import Form from '@/app/ui/product-list/edit-form';
-import { EditProductListBreadcrumbs } from '@/app/ui/product-list/breadcrumbs';
+import Form from '@/components/product-list/edit-form';
+import { EditProductListBreadcrumbs } from '@/components/product-list/breadcrumbs';
 import { Button, Link, Spacer } from "@nextui-org/react"
 import { fetchById, remove } from '@/app/lib/product-list-actions'
 import { title } from '@/components/primitives';
@@ -9,8 +9,7 @@ export default async function Page({ params }: { params: { id: string, prodId: s
   const id = params.prodId;
   const productList = await fetchById(id);
   const deleteWithId = remove.bind(null, id);
-
-  console.log(id)
+  
   return (
     <main>
       <EditProductListBreadcrumbs productList={productList} />

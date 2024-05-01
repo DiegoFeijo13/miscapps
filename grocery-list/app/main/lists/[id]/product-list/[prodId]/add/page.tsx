@@ -1,5 +1,5 @@
-import Form from '@/app/ui/product-list/create-form';
-import { CreateProductListBreadcrumbs } from '@/app/ui/product-list/breadcrumbs';
+import Form from '@/components/product-list/create-form';
+import { CreateProductListBreadcrumbs } from '@/components/product-list/breadcrumbs';
 import {Button, Link, Spacer} from "@nextui-org/react"
 import {fetchListById} from '@/app/lib/list-actions'
 import {fetchProductById} from '@/app/lib/product-actions'

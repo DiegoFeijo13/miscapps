@@ -51,30 +51,6 @@ export async function findAllLists() {
         .execute()
 }
 
-export async function fetchProductsToBuyByList(listId: string) {
-    try {
-        const products = await sql<ProductListVM>`
-            SELECT 
-                p.name, 
-                p.category,
-                p.id as product_id,
-                pl.id as productList_id,
-                pl.quantity,
-                pl.price,
-                ${listId} as list_id
-            FROM products p 
-            LEFT JOIN productlist pl ON pl.product_id = p.id 
-                AND pl.list_id = ${listId}
-            WHERE pl.id IS NULL
-            ORDER BY p.category, p.name`;
-
-        return products.rows;
-    } catch (error) {
-        console.error('Database Error:', error);
-        throw new Error(`Falha ao carregar produtos.`);
-    }
-}
-
 export async function fetchBoughtProductsByList(listId: string) {
     return await
         db.selectFrom('productlist')
@@ -83,13 +59,14 @@ export async function fetchBoughtProductsByList(listId: string) {
             .where('productlist.list_id', '=', listId)
             .orderBy(['products.category', 'products.name'])
             .select([
-                'productlist.id',
+                'productlist.id as productList_id',
                 'productlist.quantity',
                 'productlist.price',
+                'productlist.done',
                 'products.name as product_name',
-                'lists.name as list_name',
-                'lists.id as list_id',
-                'products.category'
+                'products.category',
+                'products.id as product_id',                
+                'lists.id as list_id'
             ])
             .execute()
 }

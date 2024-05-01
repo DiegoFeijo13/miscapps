@@ -2,6 +2,7 @@
 
 import { signIn } from '@/auth';
 import { AuthError } from 'next-auth';
+import { redirect } from 'next/navigation';
 
 export async function authenticate(
     prevState: string | undefined,
@@ -20,4 +21,12 @@ export async function authenticate(
         }
         throw error;
     }
+}
+
+export async function gotoProductList(listId: string){
+    redirect(`/main/lists/${listId}/product-list`)
+}
+
+export async function gotoProductListEdit(listId: string, productListId: string){
+    redirect(`/main/lists/${listId}/product-list/${productListId}/edit`)
 }

@@ -1,28 +1,19 @@
 "use client"
 import React from 'react';
-import { ProductListEditVM } from '@/app/lib/definitions'
+import { ProductListVM } from '@/app/lib/definitions'
 import {
-  Table,
-  TableHeader,
-  TableBody,
-  TableRow,
-  TableCell,
-  TableColumn,
-  Button,
   Link,
-  Tooltip,
   Input,
   Card,
   CardHeader,
   Spacer
 } from '@nextui-org/react';
-import { PencilIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
-import { formatCurrency } from '@/app/lib/utils';
+import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 
-export default function BoughtTable({
+export default function ToBuyTable({
   products
 }: {
-  products: ProductListEditVM[];
+  products: ProductListVM[];
 }) {
   const [filterValue, setFilterValue] = React.useState("");
   const hasSearchFilter = Boolean(filterValue);
@@ -51,13 +42,15 @@ export default function BoughtTable({
     setFilterValue("")
   }, [])
 
+
+
   return (
     <>
       {products.length > 0 ?
         <div className="flex flex-col gap-4">
           <Input
             isClearable
-            className="w-full sm:max-w-[44%]"
+            className="w-full"
             placeholder="Buscar produtos..."
             startContent={<MagnifyingGlassIcon className='w-5' />}
             value={filterValue}
@@ -72,7 +65,7 @@ export default function BoughtTable({
         filteredItems.map((p) => {
           return (
             <>
-              <TableItem pl={p} />
+              <TableItem key={p.product_id} product={p} />
               <Spacer y={4} />
             </>
           )
@@ -82,25 +75,23 @@ export default function BoughtTable({
 
 
     </>
-  )
+  );
 }
 
-function TableItem({ pl }: { pl: ProductListEditVM }) {
+function TableItem({ product }: { product: ProductListVM }) {
   return (
-    <Card
+    <Card      
       className="w-full"
       as={Link}
-      href={`/main/lists/${pl.list_id}/product-list/${pl.id}/edit`}
+      href={`/main/lists/${product.list_id}/product-list/${product.product_id}/add`}
     >
       <CardHeader className="justify-between">
         <div className="flex gap-5">
           <div className="flex flex-col gap-1 items-start justify-center">
-            <h4 className="text-small font-semibold leading-none text-default-600">{pl.product_name}</h4>
-            <h5 className="text-small tracking-tight text-default-400">{pl.category}</h5>
+            <h4 className="text-small font-semibold leading-none text-default-600">{product.product_name}</h4>
           </div>
         </div>
-        <h5 className="text-small tracking-tight text-default-400">{pl.quantity}</h5>
-        <h5 className="text-small tracking-tight text-default-400">{formatCurrency(pl.price)}</h5>
+        <h5 className="text-small tracking-tight text-default-400">{product.category}</h5>
       </CardHeader>
     </Card>
   )

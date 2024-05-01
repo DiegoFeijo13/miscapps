@@ -1,5 +1,5 @@
-import Form from '@/app/ui/lists/edit-form';
-import { EditListBreadcrumbs } from '@/app/ui/lists/breadcrumbs';
+import Form from '@/components/lists/edit-form';
+import { EditListBreadcrumbs } from '@/components/lists/breadcrumbs';
 import { Button, Link, Spacer } from "@nextui-org/react"
 import { title, subtitle } from "@/components/primitives"
 import { fetchListById, remove } from '@/app/lib/list-actions'

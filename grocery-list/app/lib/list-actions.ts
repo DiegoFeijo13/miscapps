@@ -10,8 +10,7 @@ import {
     findListById,
     updateList,
     deleteList,
-    fetchBoughtProductsByList,
-    fetchProductsToBuyByList
+    fetchBoughtProductsByList
 } from './database'
 
 const REDIRECT_TO_URL = '/main/lists'
@@ -97,8 +96,7 @@ export async function edit(
 
     try {
         updateList(id, newValues)
-    } catch (error) {
-        console.log(error)
+    } catch (error) {        
         return {
             message: 'Erro no Banco de Dados. Falha ao atualizar lista.',
         }
@@ -128,11 +126,6 @@ export async function remove(id: string) {
 
     revalidatePath(REDIRECT_TO_URL)
     redirect(REDIRECT_TO_URL)
-}
-
-export async function getListProducts(listId: string) {
-
-    return fetchProductsToBuyByList(listId);
 }
 
 export async function getBoughtProducts(listId: string) {
