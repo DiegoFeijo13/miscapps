@@ -9,7 +9,7 @@ export default async function Page() {
 
   return (
     <>
-      <h1 className={title()}>Listas</h1>
+      <h1 className={title({color:'violet'})}>Listas</h1>
       <Spacer y={4} />
       <CreateButton href="/main/lists/create" text="Nova Lista"/>
       <Spacer y={4} />

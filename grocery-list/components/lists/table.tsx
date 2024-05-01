@@ -8,7 +8,8 @@ import {
   TableCell,
   TableColumn,
   TableBody,
-  TableRow} from "@nextui-org/react";
+  TableRow
+} from "@nextui-org/react";
 import { List } from '@/app/lib/definitions'
 import { formatDateToLocal } from "@/app/lib/utils";
 import React from "react";
@@ -66,7 +67,7 @@ export default function ListsTable({
         <Table
           aria-label="Tabela de Listas"
           removeWrapper
-          hideHeader          
+          hideHeader
           onRowAction={(key) => gotoProductList(`${key}`)}
           className="table-auto"
         >
@@ -81,17 +82,17 @@ export default function ListsTable({
               filteredItems.map((l) => {
                 return (
                   <TableRow key={l.id}>
-                    <TableCell>
+                    <TableCell className="w-full">
                       <ListCard list={l} />
                     </TableCell>
-                    <TableCell>                      
-                        <Link                          
-                          href={`/main/lists/${l.id}/edit`}                          
-                          size="sm"
-                          
-                        >
-                          Editar
-                        </Link>                      
+                    <TableCell>
+                      <Link
+                        href={`/main/lists/${l.id}/edit`}
+                        size="sm"
+
+                      >
+                        Editar
+                      </Link>
                     </TableCell>
                   </TableRow>
                 )

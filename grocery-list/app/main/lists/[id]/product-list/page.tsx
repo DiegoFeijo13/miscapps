@@ -14,9 +14,8 @@ export default async function Page({ params }: { params: { id: string } }) {
   const boughtProducts = await getBoughtProducts(listId)
   return (
     <>
-      <BuyProductListBreadcrumbs listName={list.name}/>
-      <Spacer y={4} />
-      <h1 className={title()}>Itens da lista </h1>
+      <BuyProductListBreadcrumbs/>
+      <Spacer y={4} />      
       <h1 className={title({color:'violet'})}>{list.name}</h1>
       <h1 className={subtitle()}>{ list.buy_dt ? `Em ${formatDateToLocal(list.buy_dt)}`: ''}</h1>
       <Spacer y={4} />

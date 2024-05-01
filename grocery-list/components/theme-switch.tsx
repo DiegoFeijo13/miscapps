@@ -1,78 +1,57 @@
 "use client";
 
 import { FC } from "react";
-import { VisuallyHidden } from "@react-aria/visually-hidden";
-import { SwitchProps, useSwitch } from "@nextui-org/switch";
+import { useSwitch } from "@nextui-org/switch";
 import { useTheme } from "next-themes";
-import {useIsSSR} from "@react-aria/ssr";
-import clsx from "clsx";
+import { useIsSSR } from "@react-aria/ssr";
 
 import { SunIcon, MoonIcon } from "@heroicons/react/16/solid";
+import { Button } from "@nextui-org/react";
 
 export interface ThemeSwitchProps {
-	className?: string;
-	classNames?: SwitchProps["classNames"];
+	isLink?: boolean
 }
 
-export const ThemeSwitch: FC<ThemeSwitchProps> = ({
-	className,
-	classNames,
-}) => {
+export const ThemeSwitch: FC<ThemeSwitchProps> = ({ isLink = false }) => {
 	const { theme, setTheme } = useTheme();
-  const isSSR = useIsSSR();
+	const isSSR = useIsSSR();
 
 	const onChange = () => {
 		theme === "light" ? setTheme("dark") : setTheme("light");
 	};
 
 	const {
-		Component,
-		slots,
 		isSelected,
-		getBaseProps,
-		getInputProps,
-		getWrapperProps,
 	} = useSwitch({
 		isSelected: theme === "light" || isSSR,
-    "aria-label": `Mudar para modo ${theme === "light" || isSSR ? "dark" : "light"}`,
+		"aria-label": `Mudar para modo ${theme === "light" || isSSR ? "dark" : "light"}`,
 		onChange,
 	});
 
-	return (
-		<Component
-			{...getBaseProps({
-				className: clsx(
-					"px-px transition-opacity hover:opacity-80 cursor-pointer",
-					className,
-					classNames?.base
-				),
-			})}
-		>
-			<VisuallyHidden>
-				<input {...getInputProps()} />
-			</VisuallyHidden>
-			<div
-				{...getWrapperProps()}
-				className={slots.wrapper({
-					class: clsx(
-						[
-							"w-auto h-auto",
-							"bg-transparent",
-							"rounded-lg",
-							"flex items-center justify-center",
-							"group-data-[selected=true]:bg-transparent",
-							"!text-default-500",
-							"pt-px",
-							"px-0",
-							"mx-0",
-							"p-3"
-						],
-						classNames?.wrapper
-					),
-				})}
+	if (isLink) {
+		return (
+
+			<Button
+				size="lg"
+				variant="light"
+				onPress={onChange}
+				startContent={!isSelected || isSSR ? <SunIcon className="w-5" /> : <MoonIcon className="w-5" />}
 			>
-			 {!isSelected || isSSR ? <SunIcon className="w-5" /> : <MoonIcon className="w-5" />}
-			</div>
-		</Component>
+				{!isSelected || isSSR ? "Tema Claro" : "Tema Escuro"}
+			</Button>
+		)
+	}
+
+	return (
+
+		<Button
+			isIconOnly
+			variant="light"
+			onPress={onChange}
+		>
+			{!isSelected || isSSR ? <SunIcon className="w-5" /> : <MoonIcon className="w-5" />}
+		</Button>
+
+
 	);
 };

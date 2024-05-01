@@ -6,8 +6,9 @@ import { Providers } from "./providers";
 import { Navbar } from "@/components/navbar";
 import { Link } from "@nextui-org/react";
 import clsx from "clsx";
-import LogoutButton from "@/components/logout-button";
+import { LogoutButton, LogoutLink } from "@/components/logout-components";
 import { ThemeSwitch } from "@/components/theme-switch";
+import { getSessionUser } from "./lib/actions";
 
 export const metadata: Metadata = {
 	title: {
@@ -22,11 +23,12 @@ export const metadata: Metadata = {
 	},
 };
 
-export default function RootLayout({
+export default async function RootLayout({
 	children,
 }: {
 	children: React.ReactNode;
 }) {
+	let user = await getSessionUser();	
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<head />
@@ -38,19 +40,17 @@ export default function RootLayout({
 			>
 				<Providers>
 					<div className="relative flex flex-col h-screen">
-						<Navbar logoutButton={<LogoutButton />} />
+						<Navbar user={user} logoutButton={<LogoutButton/>} logoutLink={<LogoutLink/>} />
 						<main className="container mx-auto max-w-7xl pt-16 px-6 flex-grow">
 							{children}
 						</main>
 						<footer className="w-full flex">
-							
-							<ThemeSwitch/>
-
 							<div className="w-full flex items-center justify-center py-3">
 								<Link
 									isExternal
 									className="flex items-center gap-1 text-current"
 									title="nextui.org homepage"
+									href={siteConfig.github}
 								>
 									<span className="text-default-600">Desenvolvido por</span>
 									<p className="text-primary">Diego Feijó</p>

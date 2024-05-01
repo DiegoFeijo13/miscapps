@@ -23,11 +23,11 @@ export function EditProductListBreadcrumbs({ productList }: { productList: Produ
   );
 }
 
-export function BuyProductListBreadcrumbs({ listName }: { listName: string }) {
+export function BuyProductListBreadcrumbs() {
   return (
     <Breadcrumbs underline="hover">
       <BreadcrumbItem href='/main/lists'>Listas</BreadcrumbItem>
-      <BreadcrumbItem>{listName}</BreadcrumbItem>
+      <BreadcrumbItem>Comprar</BreadcrumbItem>
     </Breadcrumbs>
   );
 }
