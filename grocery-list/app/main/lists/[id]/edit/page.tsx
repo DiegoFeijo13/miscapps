@@ -14,8 +14,9 @@ export default async function Page({ params }: { params: { id: string } }) {
     <main>
       <EditListBreadcrumbs />
       <Spacer y={4} />
-      <h2 className={title()}>Editando lista</h2>
-      <h1 className={subtitle()}>{list.name}</h1>
+      <div className="w-full flex text-center items-center justify-center">
+        <span className={title({ color: 'violet' })}>{list.name}</span>
+      </div>    
 
       <Spacer y={4} />
       <Form list={list} />

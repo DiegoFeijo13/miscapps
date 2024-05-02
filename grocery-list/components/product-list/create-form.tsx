@@ -1,66 +1,52 @@
 'use client'
 
+import { FC } from "react";
 import {
-  CalculatorIcon,
-  CurrencyDollarIcon
-} from '@heroicons/react/24/outline';
-import {
-  Input,
-  Link,
   Button,
+  Autocomplete,
+  AutocompleteItem,
   Spacer
 } from '@nextui-org/react'
-import { title } from "@/components/primitives"
 import { create } from '@/app/lib/product-list-actions';
 import { useFormState } from 'react-dom';
-import { List, Product } from '@/app/lib/definitions';
+import { PlusIcon } from '@heroicons/react/16/solid';
+import { Product } from '@/app/lib/definitions';
 
-export default function Form({ product, list }: { product: Product, list: List }) {
+export interface AddProductProps {
+  listId: string,
+  category: string,
+  products: Product[]
+}
+
+export const AddProductForm: FC<AddProductProps> = ({ listId, category, products }) => {
   const initialState = { message: '', errors: {} };
-  const [state, dispatch] = useFormState(create, initialState);
+  const createWithId = create.bind(null, listId, category)
+  const [state, dispatch] = useFormState(createWithId, initialState);
 
   return (
     <form action={dispatch}>
-      <input type='hidden' name='list_id' value={list.id} />
-      <input type='hidden' name='product_id' value={product.id} />
-
-      <Spacer y={4} />
-      <Input
-        type='number'
-        label='Quantidade'
-        name='quantity'
-        placeholder='0,00'
-        isInvalid={state.errors?.quantity != undefined}
-        errorMessage={state.errors?.quantity &&
-          state.errors.quantity.map((error: string) => (`${error}`))}
-        startContent={
-          <CalculatorIcon className="w-5" />
-        }
-      />
-
-      <Spacer y={4} />
-      <Input
-        type='number'
-        label='Preço'
-        name='price'
-        placeholder='0,00'
-        isInvalid={state.errors?.price != undefined}
-        errorMessage={state.errors?.price &&
-          state.errors.price.map((error: string) => (`${error}`))}
-        startContent={
-          <CurrencyDollarIcon className="w-5" />
-        }
-      />
-
-      <Spacer y={4} />
-      <Button
-        type="submit"
-        color='primary'
-        className='w-full'
-      >
-        Comprar
-      </Button>
-
+      <div className="w-full flex align-baseline justify-end">
+        <Autocomplete
+          allowsCustomValue
+          label='Adicionar Produto'
+          name='product_name'
+          size="sm"
+          className="mb-4"
+          errorMessage={state.errors?.product_name &&
+            state.errors.product_name?.map((error: string) => (`${error}`))}
+        >
+          {products.map((p) => (
+            <AutocompleteItem key={p.name} value={p.name}>{p.name}</AutocompleteItem>
+          ))}
+        </Autocomplete>
+        <Spacer x={4} />
+        <Button
+          isIconOnly
+          type="submit"
+          color='primary'
+          startContent={<PlusIcon className='w-5' />}
+        />
+      </div>
     </form>
   );
 }

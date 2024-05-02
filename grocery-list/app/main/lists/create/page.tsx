@@ -10,7 +10,9 @@ export default async function Page() {
     <main>
       <CreateListBreadcrumbs/>
       <Spacer y={4}/>
-      <h1 className={title()}>Nova Lista</h1>
+      <div className="w-full flex text-center items-center justify-center">
+        <span className={title({ color: 'violet' })}>Nova Lista</span>
+      </div>
       
       <Spacer y={4} />
       <Form/>

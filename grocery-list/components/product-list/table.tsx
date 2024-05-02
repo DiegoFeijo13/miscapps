@@ -14,66 +14,75 @@ import { ProductListVM } from '@/app/lib/definitions'
 import { formatCurrency } from "@/app/lib/utils";
 import React from "react";
 import { gotoProductListEdit } from "@/app/lib/actions";
+import { AddProductForm } from "./create-form";
+import { toggleDone } from "@/app/lib/product-list-actions";
 
 
-export default function ProductListTable({
-  productLists
-}: {
-  productLists: ProductListVM[],
-}) {
-  const selectedProductListIds = productLists.filter((pl) => pl.productList_id).map((pl) => pl.product_id)
+export default function ProductListTable({ productLists, category, listId }: { productLists: ProductListVM[], category: string, listId: string }) {
 
-  const [selectedKeys, setSelectedKeys] = React.useState(new Set(selectedProductListIds));
+  const toggleIsDone = (e: any, productList_id: string | null) => {
+    if(!productList_id)
+      return;
 
-  const onRowAction = (key: any) => {
-    console.log(key.target)
-    if (!key)
-      return
-
-    if (selectedKeys.has(key))
-      console.log(key)
+    toggleDone(productList_id, e.target.checked)
   }
 
   const gotoEditProductList = (id: string) => {
-    let productList = productLists.find((pl) => pl.product_id === id)
-    if (productList?.productList_id)
-      gotoProductListEdit(productList.list_id, productList.productList_id);
+    gotoProductListEdit(listId, id);
   }
+
+  const productsByCategory = (category: string) => {
+    return productLists
+      .filter((p) => p.category === category)
+      .map((p) => {
+        return ({ name: p.product_name, category: p.category, id: p.product_id })
+      })
+  }
+
+  const productListsByCategory = (category: string) => {    
+    return productLists
+      .filter((p) => p.category === category)      
+  }
+
+  const products = productsByCategory(category);
 
 
   return (
-    <Table
-      aria-label="Tabela de Compras"
-      removeWrapper      
-      className="table-auto"
-    >
-      <TableHeader>
-        <TableColumn>{''}</TableColumn>
-        <TableColumn align="start">PRODUTO</TableColumn>
-        <TableColumn>QTD</TableColumn>
-        <TableColumn>R$</TableColumn>
-      </TableHeader>
-      <TableBody
-        emptyContent={"Sem produtos para exibir."}
-        items={productLists}
+    <>
+      <AddProductForm category={category} listId={listId} products={products} />
+      <Table
+        aria-label="Tabela de Compras"
+        removeWrapper
+        className="table-auto"
+        onRowAction={(key) => gotoEditProductList(key.toString())}
       >
-        {(item) => (
-          <TableRow key={item.product_id}>
-            <TableCell>
-              <Checkbox  
-                name="done"
-                defaultChecked={item.done}
-                onChange={(e) => onRowAction(e)}/>
-            </TableCell>
-            <TableCell>{item.product_name}</TableCell>
-            <TableCell>{item.quantity}</TableCell>
-            <TableCell>{formatCurrency(item.price ?? 0)}</TableCell>
-          </TableRow>
-        )}
-      </TableBody>
+        <TableHeader>
+          <TableColumn>{''}</TableColumn>
+          <TableColumn align="start">PRODUTO</TableColumn>
+          <TableColumn>QTD</TableColumn>
+          <TableColumn>R$</TableColumn>
+        </TableHeader>
+        <TableBody
+          emptyContent={"Sem produtos para exibir."}
+          items={productListsByCategory(category)}
+        >
+          {(item) => (
+            <TableRow key={item.productList_id}>
+              <TableCell>
+                <Checkbox
+                  name="done"
+                  defaultSelected={item.done}
+                  onChange={(e) => toggleIsDone(e, item.productList_id)} />
+              </TableCell>
+              <TableCell>{item.product_name}</TableCell>
+              <TableCell>{item.quantity}</TableCell>
+              <TableCell>{formatCurrency(item.price ?? 0)}</TableCell>
+            </TableRow>
+          )}
+        </TableBody>
 
-    </Table>
-
+      </Table>
+    </>
 
 
   );

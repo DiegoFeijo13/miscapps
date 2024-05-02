@@ -9,7 +9,8 @@ import {
     findAllProducts,
     findProductById,
     updateProduct,
-    deleteProduct
+    deleteProduct,
+    findProductByName
 } from './database'
 import { NewProduct, ProductUpdate } from './db_schema';
 
@@ -100,6 +101,10 @@ export async function fetchProducts() { return await findAllProducts() }
 
 export async function fetchProductById(id: string) {
     return await findProductById(id) ?? { id: '', name: '', category: '' }
+}
+
+export async function fetchProductByName(name: string) {
+    return await findProductByName(name);
 }
 
 export async function remove(id: string) {

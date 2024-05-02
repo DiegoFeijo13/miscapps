@@ -8,8 +8,6 @@ import {
     ProductUpdate
 } from '@/app/lib/db_schema'
 import { createKysely } from '@vercel/postgres-kysely'
-import { sql } from '@vercel/postgres'
-import { ProductListVM } from './definitions';
 
 const db = createKysely<Database>();
 
@@ -65,7 +63,7 @@ export async function fetchBoughtProductsByList(listId: string) {
                 'productlist.done',
                 'products.name as product_name',
                 'products.category',
-                'products.id as product_id',                
+                'products.id as product_id',
                 'lists.id as list_id'
             ])
             .execute()
@@ -101,6 +99,13 @@ export async function findProductById(id: string) {
         .executeTakeFirst()
 }
 
+export async function findProductByName(name: string) {
+    return await db.selectFrom('products')
+        .where('name', 'ilike', name.trim())
+        .selectAll()
+        .executeTakeFirst()
+}
+
 export async function findAllProducts() {
     return await db.selectFrom('products')
         .orderBy('name')
@@ -123,6 +128,23 @@ export async function createProductList(productList: NewProductList) {
         .values(productList)
         .returningAll()
         .executeTakeFirstOrThrow()
+}
+
+export async function createBunchProductList(listId: string, products: string[]) {
+    return await db
+        .insertInto('productlist')
+        .columns(['list_id', 'product_id', 'quantity', 'price'])
+        .expression((eb) => eb
+            .selectFrom('products')
+            .where('id', 'in', products)
+            .select((eb) => [
+                eb.val(listId).as('list_id'),
+                'products.id',
+                eb.lit(0).as('quantity'),
+                eb.lit(0).as('price'),
+            ])
+        )
+        .execute()
 }
 
 export async function updateProductList(id: string, newValues: ProductListUpdate) {
@@ -148,6 +170,7 @@ export async function findProductListById(id: string) {
             'productlist.id',
             'productlist.quantity',
             'productlist.price',
+            'productlist.done',
             'products.name as product_name',
             'lists.name as list_name',
             'lists.id as list_id',
@@ -155,5 +178,40 @@ export async function findProductListById(id: string) {
         ])
         .executeTakeFirst()
 
+}
+
+export async function fetchProductListById(id: string) {
+    return await db.selectFrom('productlist')
+        .where('productlist.id', '=', id)
+        .select([
+            'id',
+            'product_id',
+            'list_id',
+            'quantity',
+            'price',
+            'done'
+        ])
+        .executeTakeFirst()
+
+}
+
+export async function findProductNotInList(listId: string) {
+    return await db
+        .selectFrom('products')
+        .where(({ not, exists, selectFrom }) =>
+            not(exists(
+                selectFrom('productlist')
+                    .select('product_id')
+                    .where('productlist.list_id', '=', listId)
+                    .whereRef('productlist.product_id', '=', 'products.id')
+            ))
+        )
+        .select([
+            'products.id',
+            'products.name',
+            'products.category',
+        ])
+        .orderBy('products.name')
+        .execute()
 }
 //#endregion ProductList Functions

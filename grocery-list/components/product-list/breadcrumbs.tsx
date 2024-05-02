@@ -31,3 +31,13 @@ export function BuyProductListBreadcrumbs() {
     </Breadcrumbs>
   );
 }
+
+export function AddProductListBreadcrumbs({listId}:{listId: string}) {
+  return (
+    <Breadcrumbs underline="hover">
+      <BreadcrumbItem href='/main/lists'>Listas</BreadcrumbItem>
+      <BreadcrumbItem href={`/main/lists/${listId}/product-list`}>Comprar</BreadcrumbItem>
+      <BreadcrumbItem>Adicionar produtos</BreadcrumbItem>
+    </Breadcrumbs>
+  );
+}
