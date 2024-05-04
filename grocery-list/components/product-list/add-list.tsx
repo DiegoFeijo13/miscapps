@@ -96,7 +96,7 @@ export default function AddList({ products, listId }: { products: Product[], lis
 
 function ProductListTable({ products, listId }: { products: Product[], listId: string }) {
     const [isLoading, setIsLoading] = React.useState(false);
-    const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
+    const [selectedKeys, setSelectedKeys] = React.useState<Set<React.Key>>(new Set([]));
 
 
     const addSelected = () => {
@@ -107,7 +107,8 @@ function ProductListTable({ products, listId }: { products: Product[], listId: s
         }
 
         if (selectedKeys.size > 0) {
-            selectedKeys.forEach((k) => ids.push(k))
+            
+            selectedKeys.forEach((k) => ids.push(k.toString()))
         }
 
         if (ids.length > 0) {
@@ -135,11 +136,10 @@ function ProductListTable({ products, listId }: { products: Product[], listId: s
 
             <Table
                 aria-label="Tabela de Compras"
-                selectionMode="multiple"
-                selectedKeys={selectedKeys}
+                selectionMode="multiple"                
                 isCompact
                 removeWrapper
-                onSelectionChange={setSelectedKeys}
+                onSelectionChange={(keys) => setSelectedKeys(new Set(keys))}
             >
                 <TableHeader>
                     <TableColumn>PRODUTO</TableColumn>

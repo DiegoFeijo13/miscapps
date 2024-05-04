@@ -73,7 +73,7 @@ export default function ListsTable({
         >
           <TableHeader>
             <TableColumn>LISTA</TableColumn>
-            <TableColumn>''</TableColumn>
+            <TableColumn>{""}</TableColumn>
           </TableHeader>
           <TableBody
             emptyContent={"Sem listas para exibir."}
