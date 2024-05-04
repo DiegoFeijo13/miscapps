@@ -72,6 +72,7 @@ export async function create(listId: string, category: string, prevState: State,
             product = await createProduct(newProduct)
         } catch (error) {
             return {
+                errors: {product_name: ["Erro ao criar produto"]},
                 message: 'Erro no Banco de Dados. Falha ao criar produto.',
             }
         }

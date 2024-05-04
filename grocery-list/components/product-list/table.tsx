@@ -14,7 +14,6 @@ import { ProductListVM } from '@/app/lib/definitions'
 import { formatCurrency } from "@/app/lib/utils";
 import React from "react";
 import { gotoProductListEdit } from "@/app/lib/actions";
-import { AddProductForm } from "./create-form";
 import { toggleDone } from "@/app/lib/product-list-actions";
 
 
@@ -48,8 +47,7 @@ export default function ProductListTable({ productLists, category, listId }: { p
 
 
   return (
-    <>
-      <AddProductForm category={category} listId={listId} products={products} />
+    <>      
       <Table
         aria-label="Tabela de Compras"
         removeWrapper

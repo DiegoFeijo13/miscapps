@@ -15,7 +15,8 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   const listId = params.id;
   const list = await fetchListById(listId) || { name: '' };
-  const products = await getBoughtProducts(listId)
+  const products = await getBoughtProducts(listId);
+  
   return (
     <>
       <BuyProductListBreadcrumbs />

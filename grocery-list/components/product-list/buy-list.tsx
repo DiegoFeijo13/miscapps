@@ -6,7 +6,7 @@ import {
 import ProductListTable from "./table"
 import { ProductListVM } from "@/app/lib/definitions";
 
-export default function BuyList({ products, listId }: { products: ProductListVM[], listId: string }) {
+export default function BuyList({ products, listId }: { products: ProductListVM[], listId: string}) {
     const categories = products.map((p) => p.category).filter((value, i, a) => a.indexOf(value) === i)
     
     const productsByCategory = (category: string) => {

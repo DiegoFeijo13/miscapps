@@ -106,6 +106,13 @@ export async function findProductByName(name: string) {
         .executeTakeFirst()
 }
 
+export async function findProductsByCategory(name: string) {
+    return await db.selectFrom('products')
+        .where('category', 'ilike', name.trim())
+        .selectAll()
+        .execute()
+}
+
 export async function findAllProducts() {
     return await db.selectFrom('products')
         .orderBy('name')

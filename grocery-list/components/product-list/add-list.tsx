@@ -100,13 +100,14 @@ function ProductListTable({ products, listId }: { products: Product[], listId: s
     const addSelected = () => {
         let ids: string[] = [];
 
-        if (selectedKeys.size === undefined) {
-            ids = products.map((p) => p.id)
+        //Get values from React.key
+        if (selectedKeys.size > 0) {            
+            selectedKeys.forEach((k) => ids.push(k.toString()))
         }
 
-        if (selectedKeys.size > 0) {
-            
-            selectedKeys.forEach((k) => ids.push(k.toString()))
+        //NextUI table will put 'a' as the first element if all is selected
+        if(ids[0] === 'a'){
+            ids = products.map((p) => p.id)
         }
 
         if (ids.length > 0) {

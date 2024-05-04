@@ -10,7 +10,8 @@ import {
     findProductById,
     updateProduct,
     deleteProduct,
-    findProductByName
+    findProductByName,
+    findProductsByCategory
 } from './database'
 import { NewProduct, ProductUpdate } from './db_schema';
 
@@ -18,12 +19,10 @@ const REDIRECT_TO_URL = '/main/products'
 
 const FormSchema = z.object({
     id: z.string(),
-    name: z.string({
-        invalid_type_error: 'Informe um nome.',
-    }),
-    category: z.string({
-        invalid_type_error: 'Informe uma categoria.'
-    })
+    name: z.string({ invalid_type_error: 'Informe um nome.' })
+        .min(1, "Um nome deve ser informado"),
+    category: z.string({ invalid_type_error: 'Informe uma categoria.' })
+        .min(1, "Uma categoria deve ser informada")
 });
 
 const CreateList = FormSchema.omit({ id: true });
@@ -105,6 +104,10 @@ export async function fetchProductById(id: string) {
 
 export async function fetchProductByName(name: string) {
     return await findProductByName(name);
+}
+
+export async function fetchProductsByCategory(category: string) {
+    return await findProductsByCategory(category);
 }
 
 export async function remove(id: string) {
