@@ -1,4 +1,3 @@
-import { title } from "@/components/primitives"
 import ProductsTable from "@/components/products/table";
 import { Spacer } from "@nextui-org/spacer"
 import {
@@ -7,6 +6,7 @@ import {
 } from '@/app/lib/product-actions';
 import { CreateButton } from "@/components/buttons";
 import { Metadata } from "next";
+import { Title } from "@/components/title";
 
 export const metadata: Metadata = {
   title: 'Produtos'
@@ -18,9 +18,7 @@ export default async function Page() {
 
   return (
     <>
-      <div className="w-full flex text-center items-center justify-center">
-        <span className={title({ color: 'violet' })}>Produtos</span>
-      </div>
+      <Title text="Produtos"/>
       <Spacer y={4} />
       <CreateButton href="/main/products/create" text="Novo Produto" />
       <Spacer y={4} />

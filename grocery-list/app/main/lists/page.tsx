@@ -1,17 +1,15 @@
-import { title } from "@/components/primitives"
 import Table from '@/components/lists/table';
 import { CreateButton } from '@/components/buttons';
 import { fetchLists } from '@/app/lib/list-actions'
 import { Spacer } from "@nextui-org/spacer"
+import {Title} from "@/components/title";
 
 export default async function Page() {
   const lists = await fetchLists();
 
   return (
     <>
-      <div className="w-full flex text-center items-center justify-center">
-        <span className={title({ color: 'violet' })}>Listas</span>
-      </div>
+      <Title text="Listas"/>
       <Spacer y={4} />
       <CreateButton href="/main/lists/create" text="Nova Lista" />
       <Spacer y={4} />

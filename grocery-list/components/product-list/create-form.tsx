@@ -8,7 +8,7 @@ import {
   Spacer
 } from '@nextui-org/react'
 import { create } from '@/app/lib/product-list-actions';
-import { useFormState } from 'react-dom';
+import { useFormState, useFormStatus } from 'react-dom';
 import { PlusIcon } from '@heroicons/react/16/solid';
 import { Product } from '@/app/lib/definitions';
 
@@ -40,13 +40,21 @@ export const AddProductForm: FC<AddProductProps> = ({ listId, category, products
           ))}
         </Autocomplete>
         <Spacer x={4} />
-        <Button
-          isIconOnly
-          type="submit"
-          color='primary'
-          startContent={<PlusIcon className='w-5' />}
-        />
+        <ConfirmButton />
       </div>
     </form>
+  );
+}
+
+
+function ConfirmButton() {
+  const { pending } = useFormStatus();
+  return (
+    <Button
+      isIconOnly
+      isDisabled={pending}
+      type="submit"
+      color='primary'
+      startContent={<PlusIcon className='w-5' />} />
   );
 }

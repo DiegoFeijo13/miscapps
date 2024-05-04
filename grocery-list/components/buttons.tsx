@@ -5,6 +5,7 @@ import {
   Link,
   Button
 } from '@nextui-org/react'
+import React from 'react';
 
 export function CreateButton({ href, text }: { href: string, text: string }) {
   return (
@@ -32,13 +33,14 @@ export function CancelButton({ href }: { href: string }) {
   )
 }
 
-export function DeleteButton() {
+export function DeleteButton() {  
   return (
-    <Button
+    <Button      
       className='w-full'
       type='submit'
       variant='flat'
-      color='danger'>
+      color='danger'
+      >
       Excluir
     </Button>
   )

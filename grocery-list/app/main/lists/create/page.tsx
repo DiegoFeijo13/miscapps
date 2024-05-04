@@ -1,8 +1,8 @@
 import Form from '@/components/lists/create-form';
 import { CreateListBreadcrumbs } from '@/components/lists/breadcrumbs';
-import {Button, Link, Spacer} from "@nextui-org/react"
-import { title } from "@/components/primitives"
+import {Spacer} from "@nextui-org/react"
 import { CancelButton } from '@/components/buttons';
+import {Title} from '@/components/title';
  
 export default async function Page() {  
  
@@ -10,9 +10,7 @@ export default async function Page() {
     <main>
       <CreateListBreadcrumbs/>
       <Spacer y={4}/>
-      <div className="w-full flex text-center items-center justify-center">
-        <span className={title({ color: 'violet' })}>Nova Lista</span>
-      </div>
+      <Title text="Nova Lista" />
       
       <Spacer y={4} />
       <Form/>

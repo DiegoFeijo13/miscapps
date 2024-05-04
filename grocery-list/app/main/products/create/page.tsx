@@ -4,6 +4,7 @@ import {Button, Link, Spacer} from "@nextui-org/react"
 import { title } from '@/components/primitives';
 import { fetchCategories } from '@/app/lib/product-actions';
 import { CancelButton } from '@/components/buttons';
+import { Title } from '@/components/title';
  
 export default async function Page() {  
 
@@ -13,7 +14,7 @@ export default async function Page() {
     <main>
       <CreateBreadcrumbs/>
       <Spacer y={4}/>
-      <h1 className={title()}>Novo Produto</h1>
+      <Title text="Novo Produto"/>
       
       <Spacer y={4} />
       <Form categories={categories}/>

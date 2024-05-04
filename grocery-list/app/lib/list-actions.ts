@@ -14,13 +14,11 @@ import {
 } from './database'
 
 const REDIRECT_TO_URL = '/main/lists'
-const ITEMS_PER_PAGE = 6;
 
 const FormSchema = z.object({
     id: z.string(),
-    name: z.string({
-        invalid_type_error: 'Informe um nome.',
-    }),
+    name: z.string({invalid_type_error: 'Informe um nome.'})
+        .min(1,"Um nome deve ser informado")    ,
     date: z.string({
         invalid_type_error: 'Informe uma data.'
     })

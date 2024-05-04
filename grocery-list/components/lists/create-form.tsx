@@ -5,20 +5,21 @@ import {
   CalendarDaysIcon
 } from '@heroicons/react/24/outline';
 import {
-  Input,  
+  Input,
   Button,
   Spacer
 } from '@nextui-org/react'
 import { create } from '@/app/lib/list-actions';
-import { useFormState } from 'react-dom';
+import { useFormState, useFormStatus } from 'react-dom';
 import { formatDateToEdit } from '@/app/lib/utils';
+import { ExclamationCircleIcon } from '@heroicons/react/16/solid';
 
 export default function Form() {
   const initialState = { message: '', errors: {} };
   const [state, dispatch] = useFormState(create, initialState);
 
   return (
-    <form action={dispatch}>      
+    <form action={dispatch}>
       <Input
         type='text'
         label='Nome'
@@ -49,13 +50,23 @@ export default function Form() {
       />
 
       <Spacer y={4} />
-      <Button
-      className='w-full'
-        type="submit"
-        color='primary'
-      >
-        Criar Lista
-      </Button>
+
+      <ConfirmButton />
+
     </form>
+  );
+}
+
+function ConfirmButton() {
+  const { pending } = useFormStatus();
+  return (
+    <Button
+      isDisabled={pending}
+      type='submit'
+      color='primary'
+      className='w-full'
+    >
+      Criar Lista
+    </Button>
   );
 }

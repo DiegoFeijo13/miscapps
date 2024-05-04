@@ -7,12 +7,11 @@ import {
 } from '@heroicons/react/24/outline';
 import {
   Input,
-  Link,
   Button,
   Spacer
 } from '@nextui-org/react'
 import { edit } from '@/app/lib/list-actions';
-import { useFormState } from 'react-dom';
+import { useFormState, useFormStatus } from 'react-dom';
 import { formatDateToEdit } from "@/app/lib/utils";
 
 export default function Form({ list }: { list: List }) {
@@ -53,8 +52,16 @@ export default function Form({ list }: { list: List }) {
 
       <Spacer y={4} />
       
-      <Button className="w-full" type="submit" color='primary'> Atualizar</Button>
+      <ConfirmButton />
 
     </form>
+  );
+}
+
+
+function ConfirmButton() {
+  const { pending } = useFormStatus();
+  return (
+    <Button isDisabled={pending} className="w-full" type="submit" color='primary'> Atualizar</Button>
   );
 }

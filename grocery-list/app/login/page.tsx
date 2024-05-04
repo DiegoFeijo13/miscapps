@@ -11,18 +11,15 @@ import {
   Spacer
 } from '@nextui-org/react';
 import { useFormState, useFormStatus } from 'react-dom';
-import { title } from "@/components/primitives";
 import { authenticate } from '@/app/lib/actions';
+import { Title } from '@/components/title';
 
 export default function LoginPage() {
   const [errorMessage, dispatch] = useFormState(authenticate, undefined);
   return (
     <form action={dispatch}>
-    <h1 className={title()}>Log in</h1>
-
+    <Title text="Log in"/>
     <Spacer y={4} />
-
-
     <Input
       key="name"
       type="text"

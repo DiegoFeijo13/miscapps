@@ -4,6 +4,7 @@ import {fetchListById} from "@/app/lib/list-actions";
 import {fetchProductsNotInList} from "@/app/lib/product-list-actions";
 import { AddProductListBreadcrumbs } from "@/components/product-list/breadcrumbs";
 import AddList from "@/components/product-list/add-list";
+import { Subtitle, Title } from "@/components/title";
 
 export default async function Page({ params }: { params: { id: string } }) {
 
@@ -15,12 +16,9 @@ export default async function Page({ params }: { params: { id: string } }) {
     <>
       <AddProductListBreadcrumbs listId={listId}/>
       <Spacer y={4} />
-      <div className="w-full flex text-center items-center justify-center">
-        <span className={title({ color: 'violet' })}>{list.name}</span>
-      </div>
-      <div className="w-full flex text-center items-center justify-center mt-4">        
-        <span className={subtitle()}>Adicionar Produtos</span>
-      </div>
+      <Title text={list.name}/>
+      
+      <Subtitle text="Adicionar Produtos" />
 
       <Spacer y={4} />
       <AddList products={productsToAdd} listId={listId} />

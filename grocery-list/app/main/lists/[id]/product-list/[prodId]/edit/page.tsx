@@ -2,20 +2,20 @@ import Form from '@/components/product-list/edit-form';
 import { EditProductListBreadcrumbs } from '@/components/product-list/breadcrumbs';
 import { Button, Link, Spacer } from "@nextui-org/react"
 import { fetchById, remove } from '@/app/lib/product-list-actions'
-import { title } from '@/components/primitives';
 import { CancelButton, DeleteButton } from '@/components/buttons';
+import { Subtitle, Title } from '@/components/title';
 
 export default async function Page({ params }: { params: { id: string, prodId: string } }) {
   const id = params.prodId;
   const productList = await fetchById(id);
   const deleteWithId = remove.bind(null, id);
-  
+
   return (
     <main>
       <EditProductListBreadcrumbs productList={productList} />
       <Spacer y={4} />
-      <h1 className={title()}>Editando compra do produto </h1>
-      <h1 className={title({ color: 'violet' })}>{productList.product_name}</h1>
+      <Subtitle text="Editando compra do produto" />
+      <Title text={productList.product_name} />
 
       <Spacer y={4} />
       <Form productList={productList} />

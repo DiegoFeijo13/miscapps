@@ -11,9 +11,7 @@ import {
     TableCell,
     TableColumn,
     TableHeader,
-    TableRow,
-    button
-} from "@nextui-org/react"
+    TableRow} from "@nextui-org/react"
 import { Product } from "@/app/lib/definitions";
 import { addAllProductsToList } from "@/app/lib/product-list-actions";
 import { PlusIcon } from "@heroicons/react/16/solid";
