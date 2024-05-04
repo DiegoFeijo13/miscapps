@@ -30,21 +30,11 @@ export default function ProductListTable({ productLists, category, listId }: { p
     gotoProductListEdit(listId, id);
   }
 
-  const productsByCategory = (category: string) => {
-    return productLists
-      .filter((p) => p.category === category)
-      .map((p) => {
-        return ({ name: p.product_name, category: p.category, id: p.product_id })
-      })
-  }
-
   const productListsByCategory = (category: string) => {    
     return productLists
-      .filter((p) => p.category === category)      
+      .filter((p) => p.category === category)
+      .sort((a,b) => b.done === a.done? 0 : b.done? -1 : 1)      
   }
-
-  const products = productsByCategory(category);
-
 
   return (
     <>      
@@ -55,10 +45,10 @@ export default function ProductListTable({ productLists, category, listId }: { p
         onRowAction={(key) => gotoEditProductList(key.toString())}
       >
         <TableHeader>
-          <TableColumn>{''}</TableColumn>
-          <TableColumn align="start">PRODUTO</TableColumn>
-          <TableColumn>QTD</TableColumn>
-          <TableColumn>R$</TableColumn>
+          <TableColumn key='done'>{''}</TableColumn>
+          <TableColumn key='product' align="start">PRODUTO</TableColumn>
+          <TableColumn key='quantity'>QTD</TableColumn>
+          <TableColumn key='price'>R$</TableColumn>
         </TableHeader>
         <TableBody
           emptyContent={"Sem produtos para exibir."}
