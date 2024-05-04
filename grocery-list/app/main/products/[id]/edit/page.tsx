@@ -1,5 +1,5 @@
-import Form from '@/app/ui/products/edit-form';
-import { EditBreadcrumbs }  from '@/app/ui/products/breadcrumbs';
+import Form from '@/components/products/edit-form';
+import { EditBreadcrumbs }  from '@/components/products/breadcrumbs';
 import {Spacer} from "@nextui-org/react"
 import {fetchProductById, remove} from '@/app/lib/product-actions'
 import { subtitle, title } from '@/components/primitives';

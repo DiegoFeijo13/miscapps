@@ -37,3 +37,7 @@ export async function gotoProductList(listId: string){
 export async function gotoProductListEdit(listId: string, productListId: string){
     redirect(`/main/lists/${listId}/product-list/${productListId}/edit`)
 }
+
+export async function gotoProductEdit(productId: string){
+    redirect(`/main/products/${productId}/edit`)
+}
