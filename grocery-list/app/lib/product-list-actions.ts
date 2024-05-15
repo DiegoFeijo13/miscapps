@@ -13,8 +13,7 @@ import {
     createProduct,
     fetchProductListById,
     findProductNotInList,
-    createBunchProductList,
-    getListTotals
+    createBunchProductList    
 } from './database'
 import { fetchListById } from './list-actions';
 import { fetchProductById } from './product-actions';
@@ -251,8 +250,4 @@ export async function fetchById(id: string) {
 
 export async function fetchProductsNotInList(listId: string) {
     return await findProductNotInList(listId)
-}
-
-export async function fetchListTotals(listId: string){
-    return await getListTotals(listId)
 }
