@@ -24,8 +24,16 @@ export const formatNumber = (amount: number) => {
     maximumFractionDigits: 2
   }
   let formatter = new Intl.NumberFormat(locale, options);
-  
+
   return formatter.format(amount)
+};
+
+export const formatNumberToLocaleString = (amount: number) => {
+  return (amount).toLocaleString('pt-br', {
+    style: 'amount',
+    currency: 'BRL',
+  });
+
 };
 
 export const formatDateToLocal = (

@@ -12,7 +12,7 @@ import {
   Button
 } from "@nextui-org/react";
 import { ProductListVM } from '@/app/lib/definitions'
-import { formatNumber } from "@/app/lib/utils";
+import { formatNumber, formatNumberToLocaleString } from "@/app/lib/utils";
 import React from "react";
 import { toggleDone, updateQuantity, updatePrice, remove } from "@/app/lib/product-list-actions";
 import { TrashIcon } from "@heroicons/react/16/solid";
@@ -98,7 +98,7 @@ export default function ProductListTable({ productLists, category, listId }: { p
                   type="number"
                   label="Preço"
                   aria-label="Preço"
-                  defaultValue={formatNumber(item.price ?? 0)}
+                  defaultValue={formatNumberToLocaleString(item.price ?? 0)}
                   onValueChange={(value) => updatePriceEvent(value, item.productList_id)}
                   labelPlacement="inside"
                   size="sm" 
