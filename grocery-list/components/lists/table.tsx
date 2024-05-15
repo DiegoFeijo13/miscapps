@@ -8,20 +8,17 @@ import {
   TableCell,
   TableColumn,
   TableBody,
-  TableRow
+  TableRow,
+  ButtonGroup,
+  Button
 } from "@nextui-org/react";
-import { List } from '@/app/lib/definitions'
-import { formatDateToLocal } from "@/app/lib/utils";
+import { ListVM } from '@/app/lib/definitions'
+import { formatDateToLocal, formatNumber } from "@/app/lib/utils";
 import React from "react";
-import { MagnifyingGlassIcon } from "@heroicons/react/16/solid";
-import { gotoProductList } from "@/app/lib/actions";
+import { MagnifyingGlassIcon, PencilIcon, ShoppingCartIcon, TrashIcon } from "@heroicons/react/16/solid";
+import {remove} from "@/app/lib/list-actions"
 
-
-export default function ListsTable({
-  lists
-}: {
-  lists: List[],
-}) {
+export default function ListsTable({lists}: {lists: ListVM[]}) {
   const [filterValue, setFilterValue] = React.useState("");
   const hasSearchFilter = Boolean(filterValue);
 
@@ -64,16 +61,13 @@ export default function ListsTable({
         />
       </div>
       {
-        <Table
-          aria-label="Tabela de Listas"
-          removeWrapper
-          hideHeader
-          onRowAction={(key) => gotoProductList(`${key}`)}
-          className="table-auto"
-        >
+        <Table aria-label="Tabela de Listas">
           <TableHeader>
             <TableColumn>LISTA</TableColumn>
-            <TableColumn>{""}</TableColumn>
+            <TableColumn>DATA</TableColumn>
+            <TableColumn>ITENS</TableColumn>
+            <TableColumn className="text-center">TOTAL R$</TableColumn>
+            <TableColumn className="text-center">AÇÕES</TableColumn>
           </TableHeader>
           <TableBody
             emptyContent={"Sem listas para exibir."}
@@ -82,17 +76,45 @@ export default function ListsTable({
               filteredItems.map((l) => {
                 return (
                   <TableRow key={l.id}>
-                    <TableCell className="w-full">
-                      <ListCard list={l} />
-                    </TableCell>
-                    <TableCell>
-                      <Link
-                        href={`/main/lists/${l.id}/edit`}
-                        size="sm"
+                    <TableCell>{l.name}</TableCell>
+                    <TableCell>{formatDateToLocal(l.buy_dt)}</TableCell>
+                    <TableCell className="text-center">{l.items}</TableCell>
+                    <TableCell className="text-right">{formatNumber(l.total)}</TableCell>
+                    <TableCell className="text-center w-1/5">
+                      <ButtonGroup>
+                        <Button
+                          as={Link}
+                          isIconOnly
+                          aria-label="Comprar"
+                          color="primary"
+                          href={`/main/lists/${l.id}/product-list`}
+                          size="sm"                          
+                          variant="flat"
+                        >
+                          <ShoppingCartIcon className="w-5" />
+                        </Button>
+                        <Button
+                          as={Link}
+                          isIconOnly
+                          aria-label="Editar"
+                          href={`/main/lists/${l.id}/edit`}
+                          size="sm"
+                          variant="flat"
+                        >
+                          <PencilIcon className="w-5" />
+                        </Button>
+                        <Button                          
+                          isIconOnly
+                          aria-label="Excluir"                          
+                          size="sm"
+                          variant="flat"
+                          color="danger"
+                          onPress={(e) => remove(l.id)}
+                        >
+                          <TrashIcon className="w-5" />
+                        </Button>
+                      </ButtonGroup>
 
-                      >
-                        Editar
-                      </Link>
                     </TableCell>
                   </TableRow>
                 )
@@ -106,13 +128,4 @@ export default function ListsTable({
       }
     </div>
   );
-}
-
-function ListCard({ list }: { list: List }) {
-  return (
-    <div className="flex flex-col gap-1 items-start justify-center">
-      <h4 className="text-small font-semibold leading-none text-default-600">{list.name}</h4>
-      <h5 className="text-small tracking-tight text-default-400">{formatDateToLocal(list.buy_dt)}</h5>
-    </div>
-  )
 }

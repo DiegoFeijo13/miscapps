@@ -2,7 +2,6 @@
 
 import {
   Button,
-  ButtonGroup,
   Input,
   Link,
   Select,
@@ -15,12 +14,12 @@ import {
   TableRow
 } from "@nextui-org/react";
 import { Product } from '@/app/lib/definitions'
-import { remove } from "@/app/lib/product-actions";
 import React from "react";
 import { MagnifyingGlassIcon, PencilIcon } from "@heroicons/react/16/solid";
+import ProductCard from "./product-card";
 
 
-export default function ProductsTable({ products }: { products: Product[], categories: string[] }) {
+export default function ProductsMobileTable({ products }: { products: Product[], categories: string[] }) {
   const categories = Array.from(new Set(products.map((p) => p.category)))
   const [category, setCategory] = React.useState("");
 
@@ -85,43 +84,15 @@ export default function ProductsTable({ products }: { products: Product[], categ
         </Select>
       </div>
 
-      <Table aria-label="Tabela de Produtos">
-        <TableHeader>
-          <TableColumn>CATEGORIA</TableColumn>
-          <TableColumn>PRODUTO</TableColumn>
-          <TableColumn>AÇÕES</TableColumn>
-        </TableHeader>
-        <TableBody
-          emptyContent={"Sem produtos para exibir."}
-        >
-          {
-            filteredProducts.map((p) => {
-              return (
-                <TableRow key={p.id}>
-                  <TableCell className="w-1/4">{p.category}</TableCell>
-                  <TableCell className="w-2/4 text-left">{p.name}</TableCell>
-                  <TableCell className="w-1/4 text-center">
-                    <ButtonGroup>
-                      <Button
-                        as={Link}
-                        isIconOnly
-                        variant="flat"
-                        href={`/main/products/${p.id}/edit`}
-                      ><PencilIcon className="w-5" /></Button>
-                      <Button
-                        isIconOnly
-                        variant="flat"
-                        color="danger"
-                        onPress={(e) => remove(p.id)}
-                      ><PencilIcon className="w-5" /></Button>
-                    </ButtonGroup>
-                  </TableCell>
-                </TableRow>
-              )
-            })
-          }
-        </TableBody>
-      </Table>
+
+      {
+        filteredProducts.map((p) => {
+          return (
+            <ProductCard product={p} key={p.id}/>
+          )
+        })
+      }
+
 
     </div>
   );

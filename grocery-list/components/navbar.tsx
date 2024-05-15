@@ -19,13 +19,19 @@ import React from "react";
 import { ThemeSwitch } from "./theme-switch";
 import { User } from "next-auth";
 import { ListBulletIcon } from "@heroicons/react/16/solid";
-import { LogoutButton } from "./logout-components";
 import { Button } from "@nextui-org/react";
 
 export const Navbar = ({ user, logoutButton, logoutLink }: { user: User | undefined, logoutButton: React.ReactNode, logoutLink: React.ReactNode }) => {
 	const [isMenuOpen, setIsMenuOpen] = React.useReducer((current) => !current, false)
 	return (
-		<NextUINavbar maxWidth="xl" position="sticky" isMenuOpen={isMenuOpen} onMenuOpenChange={setIsMenuOpen}>
+		<NextUINavbar 
+		//maxWidth="xl" 
+		//position="sticky" 
+		isBordered 
+		isMenuOpen={isMenuOpen} 
+		onMenuOpenChange={setIsMenuOpen}
+		className="foreground"
+		>
 			<NavbarContent className="basis-1/5 sm:basis-full" justify="start">
 				<NavbarBrand as="li" className="gap-3 max-w-fit">
 					<NextLink

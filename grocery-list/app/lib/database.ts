@@ -8,6 +8,8 @@ import {
     ProductUpdate
 } from '@/app/lib/db_schema'
 import { createKysely } from '@vercel/postgres-kysely'
+import { sql } from 'kysely'
+import { ListVM } from './definitions';
 
 const db = createKysely<Database>();
 
@@ -67,6 +69,21 @@ export async function fetchBoughtProductsByList(listId: string) {
                 'lists.id as list_id'
             ])
             .execute()
+}
+
+export async function fetchListsWithTotals() {
+    return await sql<ListVM>
+        `select 
+                                l.id, 
+                                l."name" , 
+                                l.buy_dt, 
+                                count(pl.id)as items,
+                                sum(pl.quantity * pl.price) as total
+                            from lists l 
+                            left join productlist pl on pl.list_id  = l.id 
+                            group by l.id `
+        .execute(db)        
+
 }
 //#endregion List Functions
 

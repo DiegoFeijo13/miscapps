@@ -13,7 +13,8 @@ import {
     createProduct,
     fetchProductListById,
     findProductNotInList,
-    createBunchProductList
+    createBunchProductList,
+    getListTotals
 } from './database'
 import { fetchListById } from './list-actions';
 import { fetchProductById } from './product-actions';
@@ -150,8 +151,47 @@ export async function toggleDone(id: string, done: boolean) {
         }
     }
 
-    revalidatePath(REDIRECT_TO_URL(productList.list_id))
-    redirect(REDIRECT_TO_URL(productList.list_id))
+    revalidatePath(REDIRECT_TO_URL(productList.list_id))    
+}
+
+export async function updateQuantity(id: string, quantity: number) {
+    const productList = await fetchProductListById(id);
+
+    if (!productList)
+        return;
+
+    productList.quantity = quantity;
+
+    try {
+        updateProductList(id, productList)
+    } catch (error) {
+        console.log(error)
+        return {
+            message: 'Erro no Banco de Dados. Falha ao atualizar dados da compra.',
+        }
+    }
+
+    revalidatePath(REDIRECT_TO_URL(productList.list_id))    
+}
+
+export async function updatePrice(id: string, price: number) {
+    const productList = await fetchProductListById(id);
+
+    if (!productList)
+        return;
+
+    productList.price = price;
+
+    try {
+        updateProductList(id, productList)
+    } catch (error) {
+        console.log(error)
+        return {
+            message: 'Erro no Banco de Dados. Falha ao atualizar dados da compra.',
+        }
+    }
+
+    revalidatePath(REDIRECT_TO_URL(productList.list_id))    
 }
 
 export async function addAllProductsToList(listId: string, products: string[]) {
@@ -182,8 +222,7 @@ export async function remove(id: string) {
 
     deleteProductList(id);
 
-    revalidatePath(REDIRECT_TO_URL(productList.list_id))
-    redirect(REDIRECT_TO_URL(productList.list_id))
+    revalidatePath(REDIRECT_TO_URL(productList.list_id))    
 }
 
 export async function fetchById(id: string) {
@@ -212,4 +251,8 @@ export async function fetchById(id: string) {
 
 export async function fetchProductsNotInList(listId: string) {
     return await findProductNotInList(listId)
+}
+
+export async function fetchListTotals(listId: string){
+    return await getListTotals(listId)
 }

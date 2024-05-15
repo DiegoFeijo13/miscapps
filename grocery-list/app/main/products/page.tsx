@@ -7,6 +7,7 @@ import {
 import { CreateButton } from "@/components/buttons";
 import { Metadata } from "next";
 import { Title } from "@/components/title";
+import ProductsMobileTable from "@/components/products/mobile-table";
 
 export const metadata: Metadata = {
   title: 'Produtos'
@@ -18,11 +19,16 @@ export default async function Page() {
 
   return (
     <>
-      <Title text="Produtos"/>
+      <Title text="Produtos" />
       <Spacer y={4} />
       <CreateButton href="/main/products/create" text="Novo Produto" />
       <Spacer y={4} />
-      <ProductsTable products={products} categories={categories} />
+      <div className='hidden md:inline-block w-full'>
+        <ProductsTable products={products} categories={categories} />
+      </div>
+      <div className='md:hidden'>
+        <ProductsMobileTable products={products} categories={categories} />
+      </div>
     </>
   );
 }

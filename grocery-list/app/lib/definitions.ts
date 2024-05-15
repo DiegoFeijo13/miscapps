@@ -42,4 +42,12 @@ export type List = {
   buy_dt: string;
 };
 
+export type ListVM = {
+  id: string,
+  name: string,
+  buy_dt: string,
+  items: number,
+  total: number,
+}
+
 

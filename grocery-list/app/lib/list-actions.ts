@@ -10,7 +10,8 @@ import {
     findListById,
     updateList,
     deleteList,
-    fetchBoughtProductsByList
+    fetchBoughtProductsByList,
+    fetchListsWithTotals
 } from './database'
 
 const REDIRECT_TO_URL = '/main/lists'
@@ -119,11 +120,12 @@ export async function fetchListById(id: string) {
     }
 }
 
+export async function getListsWithTotals() { return (await fetchListsWithTotals()).rows}
+
 export async function remove(id: string) {
     await deleteList(id);
 
-    revalidatePath(REDIRECT_TO_URL)
-    redirect(REDIRECT_TO_URL)
+    revalidatePath(REDIRECT_TO_URL)    
 }
 
 export async function getBoughtProducts(listId: string) {

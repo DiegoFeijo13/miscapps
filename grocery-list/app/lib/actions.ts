@@ -28,16 +28,4 @@ export async function getSessionUser() {
     const session = await auth();
     return session?.user
 }
-    
 
-export async function gotoProductList(listId: string){
-    redirect(`/main/lists/${listId}/product-list`)
-}
-
-export async function gotoProductListEdit(listId: string, productListId: string){
-    redirect(`/main/lists/${listId}/product-list/${productListId}/edit`)
-}
-
-export async function gotoProductEdit(productId: string){
-    redirect(`/main/products/${productId}/edit`)
-}
