@@ -5,6 +5,7 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { NewList, ListUpdate } from './db_schema';
 import {
+    getUserId,
     createList,
     findAllLists,
     findListById,
@@ -51,9 +52,12 @@ export async function create(prevState: State, formData: FormData) {
 
     const { name, date } = validatedFields.data;
 
+    let userId = await getUserId();
+
     let list: NewList = {
         name: name,
-        buy_dt: new Date(date)
+        buy_dt: new Date(date),
+        user_id: userId
     }
 
     try {

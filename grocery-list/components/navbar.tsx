@@ -9,7 +9,6 @@ import {
 	NavbarItem,
 	NavbarMenuItem,
 } from "@nextui-org/navbar";
-import { Link } from "@nextui-org/link";
 import { link as linkStyles } from "@nextui-org/theme";
 import { siteConfig } from "@/config/site";
 import NextLink from "next/link";
@@ -18,21 +17,38 @@ import clsx from "clsx";
 import React from "react";
 import { ThemeSwitch } from "./theme-switch";
 import { User } from "next-auth";
-import { ListBulletIcon } from "@heroicons/react/16/solid";
-import { Button } from "@nextui-org/react";
+import { ListBulletIcon, UserIcon } from "@heroicons/react/16/solid";
+import { Avatar, Button, Divider, Link, User as NextUser } from "@nextui-org/react";
+import { usePathname } from "next/navigation";
 
 export const Navbar = ({ user, logoutButton, logoutLink }: { user: User | undefined, logoutButton: React.ReactNode, logoutLink: React.ReactNode }) => {
 	const [isMenuOpen, setIsMenuOpen] = React.useReducer((current) => !current, false)
+	const pathname = usePathname();
+
+
 	return (
-		<NextUINavbar 
-		//maxWidth="xl" 
-		//position="sticky" 
-		isBordered 
-		isMenuOpen={isMenuOpen} 
-		onMenuOpenChange={setIsMenuOpen}
-		className="foreground"
+		<NextUINavbar
+			isBordered
+			isMenuOpen={isMenuOpen}
+			onMenuOpenChange={setIsMenuOpen}
+			classNames={{
+				item: [
+					"flex",
+					"relative",
+					"h-full",
+					"items-center",
+					"data-[active=true]:after:content-['']",
+					"data-[active=true]:after:absolute",
+					"data-[active=true]:after:bottom-0",
+					"data-[active=true]:after:left-0",
+					"data-[active=true]:after:right-0",
+					"data-[active=true]:after:h-[2px]",
+					"data-[active=true]:after:rounded-[2px]",
+					"data-[active=true]:after:bg-secondary",
+				],
+			}}
 		>
-			<NavbarContent className="basis-1/5 sm:basis-full" justify="start">
+			<NavbarContent className="basis-1/5 md:basis-full" justify="start">
 				<NavbarBrand as="li" className="gap-3 max-w-fit">
 					<NextLink
 						className="flex justify-start items-center gap-1"
@@ -43,20 +59,21 @@ export const Navbar = ({ user, logoutButton, logoutLink }: { user: User | undefi
 					</NextLink>
 				</NavbarBrand>
 
-				<ul className="hidden lg:flex gap-4 justify-start ml-2">
+				<ul className="hidden md:flex gap-4 justify-start ml-2">
 					{user != undefined ?
 						siteConfig.navItems.map((item) => (
-							<NavbarItem key={item.href}>
-								<NextLink
+							<NavbarItem
+								key={item.href}
+								isActive={pathname === item.href}>
+								<Link
 									className={clsx(
 										linkStyles({ color: "foreground" }),
-										"data-[active=true]:text-primary data-[active=true]:font-medium"
 									)}
-									color="foreground"
+									//color="foreground"
 									href={item.href}
 								>
 									{item.label}
-								</NextLink>
+								</Link>
 							</NavbarItem>
 						))
 						: ''
@@ -69,6 +86,10 @@ export const Navbar = ({ user, logoutButton, logoutLink }: { user: User | undefi
 				justify="end"
 			>
 				<NavbarItem>
+					<UserIcon className="w-5" />
+					{user?.name}
+				</NavbarItem>
+				<NavbarItem>
 					<ThemeSwitch />
 				</NavbarItem>
 				<NavbarItem>
@@ -76,27 +97,13 @@ export const Navbar = ({ user, logoutButton, logoutLink }: { user: User | undefi
 				</NavbarItem>
 			</NavbarContent>
 
-			<NavbarContent className="sm:hidden basis-1 pl-4" justify="end">
+			<NavbarContent className="md:hidden basis-1 pl-4" justify="end">
 				<NavbarMenuToggle />
 			</NavbarContent>
 
 			<NavbarMenu>
 				<div className="mx-4 mt-2 flex flex-col gap-2">
-					{user != undefined ?
-						siteConfig.navItems.map((item, index) => (
-							<NavbarMenuItem key={`${item}-${index}`}>
-								<Button
-									as={Link}
-									variant="light"
-									href={item.href}
-									size="lg"
-									onPress={() => setIsMenuOpen()}
-									startContent={<item.icon className="w-5" />}
-								>
-									{item.label}
-								</Button>
-							</NavbarMenuItem>
-						)) : ''}
+					<UserMenu user={user} setIsMenuOpen={setIsMenuOpen} />
 					<NavbarMenuItem key={`theme-${siteConfig.navItems.length}`}>
 						<ThemeSwitch isLink={true} />
 					</NavbarMenuItem>
@@ -108,3 +115,37 @@ export const Navbar = ({ user, logoutButton, logoutLink }: { user: User | undefi
 		</NextUINavbar>
 	);
 };
+
+const UserMenu = ({ user, setIsMenuOpen }: { user: User | undefined, setIsMenuOpen: Function }) => {
+
+	if (user == undefined)
+		return (
+			<></>
+		)
+
+
+	return (
+		<>
+			<NavbarMenuItem key='user'>
+				<NextUser className='ml-4' name={user.name} />
+			</NavbarMenuItem>
+			<Divider />
+			{
+				siteConfig.navItems.map((item, index) => (
+					<NavbarMenuItem key={`${item}-${index}`}>
+						<Button
+							as={Link}
+							variant="light"
+							href={item.href}
+							size="lg"
+							onPress={() => setIsMenuOpen()}
+							startContent={<item.icon className="w-5" />}
+						>
+							{item.label}
+						</Button>
+					</NavbarMenuItem>
+				))
+			}
+		</>
+	)
+}

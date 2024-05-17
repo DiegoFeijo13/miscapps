@@ -1,5 +1,4 @@
-import Table from '@/components/lists/table';
-import MobileTable from '@/components/lists/mobile-table';
+import ListsCards from '@/components/lists/mobile-table';
 import { CreateButton } from '@/components/buttons';
 import { getListsWithTotals } from '@/app/lib/list-actions'
 import { Spacer } from "@nextui-org/spacer"
@@ -14,12 +13,8 @@ export default async function Page() {
       <Spacer y={4} />
       <CreateButton href="/main/lists/create" text="Nova Lista" />
       <Spacer y={4} />
-      <div className='hidden md:inline-block w-full'>
-        <Table lists={lists} />
-      </div>
-      <div className='md:hidden'>
-        <MobileTable lists={lists} />
-      </div>
+      
+      <ListsCards lists={lists} />
     </>
   );
 }

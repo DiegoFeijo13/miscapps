@@ -11,7 +11,8 @@ import {
     updateProduct,
     deleteProduct,
     findProductByName,
-    findProductsByCategory
+    findProductsByCategory,
+    getUserId
 } from './database'
 import { NewProduct, ProductUpdate } from './db_schema';
 
@@ -49,7 +50,15 @@ export async function create(prevState: State, formData: FormData) {
         };
     }
 
-    const newProduct: NewProduct = validatedFields.data;
+    let userId = await getUserId();
+
+    const {name, category} = validatedFields.data;
+
+    let newProduct : NewProduct = {
+        name: name,
+        category: category,
+        user_id: userId
+    }
 
     try {
         await createProduct(newProduct)

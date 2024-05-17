@@ -13,7 +13,8 @@ import {
     createProduct,
     fetchProductListById,
     findProductNotInList,
-    createBunchProductList    
+    createBunchProductList,    
+    getUserId
 } from './database'
 import { fetchListById } from './list-actions';
 import { fetchProductById } from './product-actions';
@@ -61,12 +62,14 @@ export async function create(listId: string, category: string, prevState: State,
 
     //Needs to create product?
     const { product_name } = validatedFields.data;
-    let product = await findProductByName(product_name);
+    let userId = await getUserId();
+    let product = await findProductByName(product_name);    
 
     if (!product) {
         let newProduct = {
             name: product_name,
-            category: category
+            category: category,
+            user_id: userId
         }
         try {
             product = await createProduct(newProduct)
@@ -83,7 +86,8 @@ export async function create(listId: string, category: string, prevState: State,
         list_id: listId,
         quantity: 0,
         price: 0,
-        done: false
+        done: false,
+        user_id: userId
     }
 
     try {

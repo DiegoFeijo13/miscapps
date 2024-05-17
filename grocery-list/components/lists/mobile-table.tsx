@@ -1,13 +1,14 @@
 "use client"
 
 import {
-  Input} from "@nextui-org/react";
+  Input
+} from "@nextui-org/react";
 import { ListVM } from '@/app/lib/definitions'
 import React from "react";
 import { MagnifyingGlassIcon } from "@heroicons/react/16/solid";
 import ListCard from "./list-card";
 
-export default function ListsMobileTable({ lists }: { lists: ListVM[] }) {
+export default function ListsCards({ lists }: { lists: ListVM[] }) {
   const [filterValue, setFilterValue] = React.useState("");
   const hasSearchFilter = Boolean(filterValue);
 
@@ -38,7 +39,7 @@ export default function ListsMobileTable({ lists }: { lists: ListVM[] }) {
 
   return (
     <div>
-      <div className="flex flex-col gap-4">
+      <div className="flex gap-4">
         <Input
           isClearable
           className="w-full mb-4"
@@ -49,12 +50,14 @@ export default function ListsMobileTable({ lists }: { lists: ListVM[] }) {
           onValueChange={onSearchChange}
         />
       </div>
-      {filteredItems.map((l) => {
-        return (
-          <ListCard list={l} key={l.id}/>
-        )
-      })
-      }
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
+        {filteredItems.map((l) => {
+          return (
+            <ListCard list={l} key={l.id} />
+          )
+        })
+        }
+      </div>
     </div>
   );
 }

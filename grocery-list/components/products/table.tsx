@@ -17,7 +17,7 @@ import {
 import { Product } from '@/app/lib/definitions'
 import { remove } from "@/app/lib/product-actions";
 import React from "react";
-import { MagnifyingGlassIcon, PencilIcon } from "@heroicons/react/16/solid";
+import { MagnifyingGlassIcon, PencilIcon, TrashIcon } from "@heroicons/react/16/solid";
 
 
 export default function ProductsTable({ products }: { products: Product[], categories: string[] }) {
@@ -85,7 +85,7 @@ export default function ProductsTable({ products }: { products: Product[], categ
         </Select>
       </div>
 
-      <Table aria-label="Tabela de Produtos">
+      <Table aria-label="Tabela de Produtos" className="w-full">
         <TableHeader>
           <TableColumn>CATEGORIA</TableColumn>
           <TableColumn>PRODUTO</TableColumn>
@@ -113,7 +113,7 @@ export default function ProductsTable({ products }: { products: Product[], categ
                         variant="flat"
                         color="danger"
                         onPress={(e) => remove(p.id)}
-                      ><PencilIcon className="w-5" /></Button>
+                      ><TrashIcon className="w-5" /></Button>
                     </ButtonGroup>
                   </TableCell>
                 </TableRow>
