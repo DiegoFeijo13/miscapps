@@ -64,7 +64,7 @@ export const Navbar = ({ user, logoutButton, logoutLink }: { user: User | undefi
 						siteConfig.navItems.map((item) => (
 							<NavbarItem
 								key={item.href}
-								isActive={pathname === item.href}>
+								isActive={pathname.startsWith(item.href)}>
 								<Link
 									className={clsx(
 										linkStyles({ color: "foreground" }),

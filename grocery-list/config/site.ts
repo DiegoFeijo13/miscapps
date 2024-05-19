@@ -1,4 +1,4 @@
-import { ListBulletIcon, GiftIcon } from '@heroicons/react/16/solid'
+import { ListBulletIcon, GiftIcon, PresentationChartBarIcon } from '@heroicons/react/16/solid'
 export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
@@ -15,6 +15,11 @@ export const siteConfig = {
       label: "Produtos",
       href: "/main/products",
       icon: GiftIcon
+    },
+    {
+      label: "Preços",
+      href: "/main/prices",
+      icon: PresentationChartBarIcon
     }
   ]
 };

@@ -50,4 +50,10 @@ export type ListVM = {
   total: number,
 }
 
+export type ProductChartData = {
+  product_id: string,
+  buy_dt: string,
+  price: number
+}
+
 

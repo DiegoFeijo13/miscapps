@@ -3,7 +3,7 @@
 import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { NewProductList, ProductListUpdate } from './db_schema';
+import { ProductListUpdate } from './db_schema';
 import {
     createProductList,
     updateProductList,
@@ -14,10 +14,10 @@ import {
     fetchProductListById,
     findProductNotInList,
     createBunchProductList,    
-    getUserId
+    getUserId,
+    getProductPrices
 } from './database'
 import { fetchListById } from './list-actions';
-import { fetchProductById } from './product-actions';
 
 const REDIRECT_TO_URL = (listId: string) => (`/main/lists/${listId}/product-list`)
 
@@ -254,4 +254,8 @@ export async function fetchById(id: string) {
 
 export async function fetchProductsNotInList(listId: string) {
     return await findProductNotInList(listId)
+}
+
+export async function fetchChartData(productId:string){
+    return await getProductPrices(productId)
 }

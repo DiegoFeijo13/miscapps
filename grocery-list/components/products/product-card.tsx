@@ -1,8 +1,7 @@
 import { Product } from "@/app/lib/definitions";
 import { remove } from "@/app/lib/product-actions";
-import { formatDateToLocal } from "@/app/lib/utils";
-import { EllipsisVerticalIcon, PencilIcon, TrashIcon } from "@heroicons/react/16/solid";
-import { Card, CardHeader, CardFooter, ButtonGroup, Button, CardBody, Chip, Avatar, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Spacer } from "@nextui-org/react";
+import { EllipsisVerticalIcon } from "@heroicons/react/16/solid";
+import { Card, CardHeader, Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Spacer } from "@nextui-org/react";
 import Link from "next/link";
 
 export default function ProductCard({ product }: { product: Product }) {

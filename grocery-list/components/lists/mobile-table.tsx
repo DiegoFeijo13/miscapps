@@ -50,7 +50,7 @@ export default function ListsCards({ lists }: { lists: ListVM[] }) {
           onValueChange={onSearchChange}
         />
       </div>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         {filteredItems.map((l) => {
           return (
             <ListCard list={l} key={l.id} />

@@ -29,3 +29,8 @@ export async function getSessionUser() {
     return session?.user
 }
 
+export async function gotoProductChart(product_id:string){
+    redirect(`/main/prices/${product_id}`)
+
+}
+

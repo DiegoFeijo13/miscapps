@@ -299,4 +299,17 @@ export async function findProductNotInList(listId: string) {
         .orderBy('products.name')
         .execute()
 }
+
+export async function getProductPrices(productId: string){
+    let userId = await getUserId();
+    return await db
+        .selectFrom('productlist')
+        .innerJoin('lists', 'productlist.list_id', 'lists.id')
+        .where('productlist.product_id', '=', productId)
+        .where('productlist.user_id', '=', userId)
+        .where('productlist.done','=',true)
+        .select(['productlist.product_id','productlist.price', 'lists.buy_dt'])
+        .orderBy('lists.buy_dt')
+        .execute()
+}
 //#endregion ProductList Functions

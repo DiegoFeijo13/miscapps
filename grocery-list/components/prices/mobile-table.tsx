@@ -10,7 +10,7 @@ import { MagnifyingGlassIcon } from "@heroicons/react/16/solid";
 import ProductCard from "./product-card";
 
 
-export default function ProductsMobileTable({ products }: { products: Product[], categories: string[] }) {
+export default function Products({ products }: { products: Product[], categories: string[] }) {
   const categories = Array.from(new Set(products.map((p) => p.category)))
   const [category, setCategory] = React.useState("");
 
