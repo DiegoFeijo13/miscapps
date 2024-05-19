@@ -2,7 +2,7 @@ import { ListVM } from "@/app/lib/definitions";
 import { remove } from "@/app/lib/list-actions";
 import { formatDateToLocal, formatCurrency } from "@/app/lib/utils";
 import { EllipsisVerticalIcon } from "@heroicons/react/16/solid";
-import { Card, CardHeader, CardFooter, Button, Avatar, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/react";
+import { Card, CardHeader, CardFooter, Button, Avatar, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Spacer } from "@nextui-org/react";
 import Link from "next/link";
 
 export default function ListCard({ list }: { list: ListVM }) {
@@ -10,10 +10,12 @@ export default function ListCard({ list }: { list: ListVM }) {
     <Card className="w-full">
       <CardHeader className="justify-between">
         <Avatar isBordered name={list.name[0]} />
+        <Spacer x={4}/>
         <div className="flex flex-col gap-1 items-start justify-center">
           <p className="text-lg font-semibold">{list.name}</p>
           <p className="text-small text-default-500">{formatDateToLocal(list.buy_dt)}</p>
         </div>
+        <Spacer x={4}/>
         <div className="flex flex-col gap-1 items-end justify-center">
           <div className="relative flex justify-end items-center gap-2">
             <Dropdown>

@@ -84,14 +84,15 @@ export default function ProductsMobileTable({ products }: { products: Product[],
         </Select>
       </div>
 
-
-      {
-        filteredProducts.map((p) => {
-          return (
-            <ProductCard product={p} key={p.id}/>
-          )
-        })
-      }
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
+        {
+          filteredProducts.map((p) => {
+            return (
+              <ProductCard product={p} key={p.id} />
+            )
+          })
+        }
+      </div>
 
 
     </div>

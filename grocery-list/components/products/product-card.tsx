@@ -1,37 +1,44 @@
 import { Product } from "@/app/lib/definitions";
 import { remove } from "@/app/lib/product-actions";
-import { PencilIcon, TrashIcon } from "@heroicons/react/16/solid";
-import { Card, CardHeader, CardFooter, ButtonGroup, Button, CardBody, Chip } from "@nextui-org/react";
+import { formatDateToLocal } from "@/app/lib/utils";
+import { EllipsisVerticalIcon, PencilIcon, TrashIcon } from "@heroicons/react/16/solid";
+import { Card, CardHeader, CardFooter, ButtonGroup, Button, CardBody, Chip, Avatar, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Spacer } from "@nextui-org/react";
 import Link from "next/link";
 
 export default function ProductCard({ product }: { product: Product }) {
   return (
     <Card className="mb-4">
-      <CardHeader>
-        <div className="flex flex-col w-full text-center">
-          <p className="text-lg uppercase font-semibold">{product.name}</p>
-          <p className="text-small text-default-500">{product.category}</p>
+      <CardHeader className="justify-between">
+        <div className="flex flex-col gap-1 items-start justify-center">
+          <p className="text-lg font-semibold">{product.name}</p>
+          <p className="font-semibold text-default-400 text-small">{product.category}</p>
         </div>
-      </CardHeader>
-      <CardFooter className="text-center">
-        <ButtonGroup className="w-full">
-          <Button
-            as={Link}
-            aria-label="Editar"
-            href={`/main/products/${product.id}/edit`}
-            variant="flat"
-            startContent={<PencilIcon className="w-5" />}>
-            Editar
-          </Button>
-          <Button
-            aria-label="Excluir"
-            variant="flat"
-            color="danger"
-            onPress={(e) => remove(product.id)}
-            startContent={<TrashIcon className="w-5" />}>
-            Excluir
-          </Button>
-        </ButtonGroup>
-      </CardFooter>
+        <Spacer x={4} />
+        <div className="flex flex-col gap-1 items-end justify-center">
+          <div className="relative flex justify-end items-center gap-2">
+            <Dropdown>
+              <DropdownTrigger>
+                <Button isIconOnly size="sm" variant="light">
+                  <EllipsisVerticalIcon className="w-5" />
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu>
+                <DropdownItem
+                  as={Link}
+                  aria-label="Editar"
+                  href={`/main/products/${product.id}/edit`}>
+                  Editar
+                </DropdownItem>
+                <DropdownItem
+                  className="text-danger"
+                  aria-label="Excluir"
+                  onPress={(e) => remove(product.id)}>
+                  Excluir
+                </DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+          </div>
+        </div>
+      </CardHeader>     
     </Card>)
 }

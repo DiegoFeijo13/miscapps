@@ -12,8 +12,7 @@ export default async function Page() {
       <Title text="Listas" />
       <Spacer y={4} />
       <CreateButton href="/main/lists/create" text="Nova Lista" />
-      <Spacer y={4} />
-      
+      <Spacer y={4} />      
       <ListsCards lists={lists} />
     </>
   );

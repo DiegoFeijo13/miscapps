@@ -127,7 +127,7 @@ const UserMenu = ({ user, setIsMenuOpen }: { user: User | undefined, setIsMenuOp
 	return (
 		<>
 			<NavbarMenuItem key='user'>
-				<NextUser className='ml-4' name={user.name} />
+				<NextUser className='ml-4' name={user.name} avatarProps={{name : (user?.name ?? '')[0].toUpperCase()}}/>
 			</NavbarMenuItem>
 			<Divider />
 			{

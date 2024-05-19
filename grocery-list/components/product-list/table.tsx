@@ -12,7 +12,7 @@ import {
   Button
 } from "@nextui-org/react";
 import { ProductListVM } from '@/app/lib/definitions'
-import { formatNumber, formatNumberToLocaleString } from "@/app/lib/utils";
+import { formatNumberToLocaleString } from "@/app/lib/utils";
 import React from "react";
 import { toggleDone, updateQuantity, updatePrice, remove } from "@/app/lib/product-list-actions";
 import { TrashIcon } from "@heroicons/react/16/solid";
